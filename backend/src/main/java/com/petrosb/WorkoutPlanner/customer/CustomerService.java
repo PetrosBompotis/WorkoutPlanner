@@ -3,24 +3,32 @@ package com.petrosb.WorkoutPlanner.customer;
 import com.petrosb.WorkoutPlanner.exception.DuplicateResourceException;
 import com.petrosb.WorkoutPlanner.exception.RequestValidationException;
 import com.petrosb.WorkoutPlanner.exception.ResourceNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
     private final CustomerDataAccessService customerDataAccessService;
+    private final CustomerDTOMapper customerDTOMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public CustomerService(CustomerDataAccessService customerDataAccessService) {
+    public CustomerService(CustomerDataAccessService customerDataAccessService, CustomerDTOMapper customerDTOMapper, PasswordEncoder passwordEncoder) {
         this.customerDataAccessService = customerDataAccessService;
+        this.customerDTOMapper = customerDTOMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Customer> getAllCustomers(){
-        return customerDataAccessService.selectAllCustomers();
+    public List<CustomerDTO> getAllCustomers(){
+
+        return customerDataAccessService.selectAllCustomers().stream().map(customerDTOMapper)
+                .collect(Collectors.toList());
     }
 
-    public Customer getCustomer(Long id){
-        return customerDataAccessService.selectCustomerByID(id)
+    public CustomerDTO getCustomer(Long id){
+        return customerDataAccessService.selectCustomerByID(id).map(customerDTOMapper)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "customer with id [%s] not found".formatted(id)
                 ));
@@ -38,7 +46,7 @@ public class CustomerService {
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
-                customerRegistrationRequest.password(),
+                passwordEncoder.encode(customerRegistrationRequest.password()),
                 customerRegistrationRequest.age(),
                 customerRegistrationRequest.gender()
         );
