@@ -30,6 +30,9 @@ public class Customer implements UserDetails {
             strategy = GenerationType.SEQUENCE,
             generator = "customer_id_seq"
     )
+    @Column(
+            name = "id",
+            updatable = false)
     private Long id;
 
     @Column(
