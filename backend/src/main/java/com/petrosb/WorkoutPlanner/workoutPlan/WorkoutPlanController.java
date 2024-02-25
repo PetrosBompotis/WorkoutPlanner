@@ -1,10 +1,5 @@
 package com.petrosb.WorkoutPlanner.workoutPlan;
 
-import com.petrosb.WorkoutPlanner.customer.CustomerRepository;
-import com.petrosb.WorkoutPlanner.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,14 +14,25 @@ public class WorkoutPlanController {
         this.workoutPlanService = workoutPlanService;
     }
 
-    @GetMapping("/customers/{customerId}/workout_plans")
+    @GetMapping("/customers/{customerId}/workoutPlans")
     public List<WorkoutPlan> getAllWorkoutPlansByCustomerId(@PathVariable(value = "customerId") Long customerId) {
         return workoutPlanService.getAllWorkoutPlansByCustomerId(customerId);
     }
 
-    @PostMapping("/customers/{customerId}/workout_plans")
+    @PostMapping("/customers/{customerId}/workoutPlans")
     public void createWorkoutPlan(@PathVariable(value = "customerId") Long customerId,
-                                                 @RequestBody WorkoutPlanCreationRequest workoutPlanRequest) {
+                                  @RequestBody WorkoutPlanCreationRequest workoutPlanRequest) {
         workoutPlanService.addWorkoutPlan(workoutPlanRequest, customerId);
+    }
+
+    @DeleteMapping("/workoutPlans/{workoutPlanId}")
+    public void deleteWorkoutPlan(@PathVariable("workoutPlanId") Long workoutPlanId) {
+        workoutPlanService.deleteWorkoutPlanById(workoutPlanId);
+    }
+
+    @PutMapping("/workoutPlans/{workoutPlanId}")
+    public void updateWorkoutPlan(@RequestBody WorkoutPlanUpdateRequest updateRequest,
+                                  @PathVariable("workoutPlanId") Long workoutPlanId) {
+        workoutPlanService.updateWorkoutPlan(updateRequest, workoutPlanId);
     }
 }

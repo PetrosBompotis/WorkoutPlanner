@@ -2,6 +2,9 @@ package com.petrosb.WorkoutPlanner.workoutPlan;
 
 import com.petrosb.WorkoutPlanner.customer.Customer;
 import com.petrosb.WorkoutPlanner.customer.CustomerDataAccessService;
+import com.petrosb.WorkoutPlanner.customer.CustomerUpdateRequest;
+import com.petrosb.WorkoutPlanner.exception.DuplicateResourceException;
+import com.petrosb.WorkoutPlanner.exception.RequestValidationException;
 import com.petrosb.WorkoutPlanner.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +41,46 @@ public class WorkoutPlanService {
         );
 
         workoutPlanDataAccessService.insertWorkoutPlan(workoutPlan);
+    }
+
+    public void deleteWorkoutPlanById(Long workoutPlanId){
+        //check if id exists
+        if(!workoutPlanDataAccessService.existsWorkoutPlanWithId(workoutPlanId)){
+            throw new ResourceNotFoundException("Customer with id [%s] not found".formatted(workoutPlanId));
+        }
+
+        //otherwise remove
+        workoutPlanDataAccessService.deleteWorkoutPlanById(workoutPlanId);
+
+    }
+
+    public void updateWorkoutPlan(WorkoutPlanUpdateRequest updateRequest, Long workoutPlanId){
+
+        WorkoutPlan workoutPlan = workoutPlanDataAccessService.selectWorkoutPlanByID(workoutPlanId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "customer with id [%s] not found".formatted(workoutPlanId)
+                ));
+        boolean changes = false;
+        //check if attributes need change exists
+        if (updateRequest.programName() != null && !updateRequest.programName().equals(workoutPlan.getProgramName())){
+            workoutPlan.setProgramName(updateRequest.programName());
+            changes = true;
+        }
+
+        if (updateRequest.difficulty() != null && !updateRequest.difficulty().equals(workoutPlan.getDifficulty())){
+            workoutPlan.setDifficulty(updateRequest.difficulty());
+            changes = true;
+        }
+
+        if (updateRequest.gender() != null && !updateRequest.gender().equals(workoutPlan.getGender())){
+            workoutPlan.setGender(updateRequest.gender());
+            changes = true;
+        }
+        //otherwise update
+        if (!changes){
+            throw new RequestValidationException("no data changes found");
+        }
+
+        workoutPlanDataAccessService.updateWorkoutPlanById(workoutPlan);
     }
 }
