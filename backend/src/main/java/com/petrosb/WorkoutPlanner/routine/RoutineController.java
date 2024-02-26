@@ -14,7 +14,7 @@ public class RoutineController {
     }
 
     @GetMapping("/workoutPlans/{workoutPlanId}/routines")
-    public List<Routine> getAllRoutinesByCustomerId(@PathVariable(value = "workoutPlanId") Long workoutPlanId) {
+    public List<Routine> getAllRoutinesByWorkoutPlanId(@PathVariable(value = "workoutPlanId") Long workoutPlanId) {
         return routineService.getAllRoutinesByWorkoutPlanId(workoutPlanId);
     }
 
