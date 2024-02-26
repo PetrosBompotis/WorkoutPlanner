@@ -7,8 +7,10 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Objects;
+
 @Entity
-@Table(name = "WorkoutPlan")
+@Table(name = "workoutPlan")
 public class WorkoutPlan {
     @Id
     @SequenceGenerator(
@@ -93,5 +95,29 @@ public class WorkoutPlan {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkoutPlan{" +
+                "id=" + id +
+                ", programName='" + programName + '\'' +
+                ", difficulty=" + difficulty +
+                ", gender=" + gender +
+                ", customer=" + customer +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorkoutPlan that = (WorkoutPlan) o;
+        return Objects.equals(id, that.id) && Objects.equals(programName, that.programName) && difficulty == that.difficulty && gender == that.gender && Objects.equals(customer, that.customer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, programName, difficulty, gender, customer);
     }
 }
