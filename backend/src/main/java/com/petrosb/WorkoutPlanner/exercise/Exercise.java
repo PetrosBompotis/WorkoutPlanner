@@ -1,6 +1,11 @@
 package com.petrosb.WorkoutPlanner.exercise;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.petrosb.WorkoutPlanner.routine.Routine;
+import com.petrosb.WorkoutPlanner.workoutPlan.WorkoutPlan;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Objects;
 
@@ -43,6 +48,11 @@ public class Exercise {
             nullable = false
     )
     private String instructions;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "routine_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Routine routine;
 
     public Long getId() {
         return id;
@@ -95,12 +105,13 @@ public class Exercise {
     public Exercise() {
     }
 
-    public Exercise(String exerciseName, Muscle muscle, Equipment equipment, String gifUrl, String instructions) {
+    public Exercise(String exerciseName, Muscle muscle, Equipment equipment, String gifUrl, String instructions, Routine routine) {
         this.exerciseName = exerciseName;
         this.muscle = muscle;
         this.equipment = equipment;
         this.gifUrl = gifUrl;
         this.instructions = instructions;
+        this.routine = routine;
     }
 
     @Override
