@@ -20,7 +20,7 @@ public class ExerciseService {
 
     public List<Exercise> getAllExercisesByRoutineId(Long routineId){
         if(!routineDataAccessService.existsRoutineWithId(routineId)){
-            throw new ResourceNotFoundException("Customer with id [%s] not found".formatted(routineId));
+            throw new ResourceNotFoundException("Routine with id [%s] not found".formatted(routineId));
         }
         return exerciseDataAccessService.selectAllExercisesByRoutineId(routineId);
     }
@@ -28,7 +28,7 @@ public class ExerciseService {
     public void addExercise(ExerciseCreationRequest exerciseCreationRequest, Long routineId){
         Routine routine = routineDataAccessService.selectRoutineByID(routineId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "routine with id [%s] not found".formatted(routineId)
+                        "Routine with id [%s] not found".formatted(routineId)
                 ));
 
         Exercise exercise = new Exercise(
@@ -46,7 +46,7 @@ public class ExerciseService {
     public void deleteRoutineById(Long routineId){
         //check if id exists
         if(!routineDataAccessService.existsRoutineWithId(routineId)){
-            throw new ResourceNotFoundException("Customer with id [%s] not found".formatted(routineId));
+            throw new ResourceNotFoundException("Exercise with id [%s] not found".formatted(routineId));
         }
 
         //otherwise remove
@@ -58,7 +58,7 @@ public class ExerciseService {
 
         Exercise exercise = exerciseDataAccessService.selectExerciseByID(exerciseId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "exercise with id [%s] not found".formatted(exerciseId)
+                        "Exercise with id [%s] not found".formatted(exerciseId)
                 ));
         boolean changes = false;
         //check if attributes need change exists

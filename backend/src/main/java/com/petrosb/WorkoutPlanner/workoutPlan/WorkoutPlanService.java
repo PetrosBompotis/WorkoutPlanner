@@ -2,8 +2,6 @@ package com.petrosb.WorkoutPlanner.workoutPlan;
 
 import com.petrosb.WorkoutPlanner.customer.Customer;
 import com.petrosb.WorkoutPlanner.customer.CustomerDataAccessService;
-import com.petrosb.WorkoutPlanner.customer.CustomerUpdateRequest;
-import com.petrosb.WorkoutPlanner.exception.DuplicateResourceException;
 import com.petrosb.WorkoutPlanner.exception.RequestValidationException;
 import com.petrosb.WorkoutPlanner.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,7 @@ public class WorkoutPlanService {
     public void addWorkoutPlan(WorkoutPlanCreationRequest workoutPlanCreationRequest, Long customerId){
         Customer customer = customerDataAccessService.selectCustomerByID(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "customer with id [%s] not found".formatted(customerId)
+                        "Customer with id [%s] not found".formatted(customerId)
                 ));
 
         WorkoutPlan workoutPlan = new WorkoutPlan(
@@ -46,7 +44,7 @@ public class WorkoutPlanService {
     public void deleteWorkoutPlanById(Long workoutPlanId){
         //check if id exists
         if(!workoutPlanDataAccessService.existsWorkoutPlanWithId(workoutPlanId)){
-            throw new ResourceNotFoundException("Customer with id [%s] not found".formatted(workoutPlanId));
+            throw new ResourceNotFoundException("Workout plan with id [%s] not found".formatted(workoutPlanId));
         }
 
         //otherwise remove
@@ -58,7 +56,7 @@ public class WorkoutPlanService {
 
         WorkoutPlan workoutPlan = workoutPlanDataAccessService.selectWorkoutPlanByID(workoutPlanId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "customer with id [%s] not found".formatted(workoutPlanId)
+                        "Workout plan with id [%s] not found".formatted(workoutPlanId)
                 ));
         boolean changes = false;
         //check if attributes need change exists
