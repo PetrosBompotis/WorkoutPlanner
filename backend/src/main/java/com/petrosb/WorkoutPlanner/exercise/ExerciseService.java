@@ -43,7 +43,7 @@ public class ExerciseService {
         exerciseDataAccessService.insertExercise(exercise);
     }
 
-    public void deleteRoutineById(Long routineId){
+    public void deleteExerciseById(Long routineId){
         //check if id exists
         if(!routineDataAccessService.existsRoutineWithId(routineId)){
             throw new ResourceNotFoundException("Exercise with id [%s] not found".formatted(routineId));
