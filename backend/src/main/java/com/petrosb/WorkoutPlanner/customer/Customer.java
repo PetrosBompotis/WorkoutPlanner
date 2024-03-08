@@ -1,13 +1,11 @@
 package com.petrosb.WorkoutPlanner.customer;
 
+import com.petrosb.WorkoutPlanner.role.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(
@@ -56,6 +54,13 @@ public class Customer implements UserDetails {
             nullable = false
     )
     private String password;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "customer_role_junction",
+            joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private List<Role> authorities;
 
     public Long getId() {
         return id;
@@ -98,6 +103,8 @@ public class Customer implements UserDetails {
     }
 
     public Customer() {
+        super();
+        this.authorities = new ArrayList<>();
     }
 
     public Customer(Long id, String name, String email, String password, Integer age, Gender gender) {
@@ -115,6 +122,15 @@ public class Customer implements UserDetails {
         this.password = password;
         this.age = age;
         this.gender = gender;
+    }
+
+    public Customer(String name, String email, String password, Integer age, Gender gender, List<Role> authorities) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
+        this.gender = gender;
+        this.password = password;
+        this.authorities = authorities;
     }
 
     @Override
@@ -144,12 +160,20 @@ public class Customer implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return this.authorities;
+    }
+
+    public void setAuthorities(List<Role> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
     public String getPassword() {
         return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
