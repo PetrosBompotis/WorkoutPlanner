@@ -49,7 +49,7 @@ public class CustomerService {
             throw new DuplicateResourceException("email already taken");
         }
 
-        Role userRole = roleRepository.findByAuthority("USER").get();
+        Role userRole = roleRepository.findByAuthority("ROLE_USER").get();
         List<Role> authorities = new ArrayList<>();
         authorities.add(userRole);
 

@@ -38,6 +38,7 @@ public class SecurityFilterChainConfig {
                                         "/api/v1/customers",
                                         "/api/v1/auth/login")
                                 .permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/v1/customers").hasRole("ADMIN")
                                 .anyRequest()
                                 .authenticated())
                 .sessionManagement(sessionManagement ->

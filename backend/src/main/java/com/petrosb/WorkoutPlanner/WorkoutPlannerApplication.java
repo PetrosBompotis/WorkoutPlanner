@@ -11,9 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.petrosb.WorkoutPlanner.customer.Gender.MALE;
 
@@ -27,9 +25,9 @@ public class WorkoutPlannerApplication {
 	@Bean
 	CommandLineRunner run(RoleRepository roleRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncode){
 		return args ->{
-			if(roleRepository.findByAuthority("ADMIN").isPresent()) return;
-			Role adminRole = roleRepository.save(new Role("ADMIN"));
-			roleRepository.save(new Role("USER"));
+			if(roleRepository.findByAuthority("ROLE_ADMIN").isPresent()) return;
+			Role adminRole = roleRepository.save(new Role("ROLE_ADMIN"));
+			roleRepository.save(new Role("ROLE_USER"));
 
 			List<Role> roles= new ArrayList<>();
 			roles.add(adminRole);
