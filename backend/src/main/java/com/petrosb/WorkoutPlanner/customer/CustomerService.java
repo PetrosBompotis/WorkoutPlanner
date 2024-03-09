@@ -3,10 +3,15 @@ package com.petrosb.WorkoutPlanner.customer;
 import com.petrosb.WorkoutPlanner.exception.DuplicateResourceException;
 import com.petrosb.WorkoutPlanner.exception.RequestValidationException;
 import com.petrosb.WorkoutPlanner.exception.ResourceNotFoundException;
+import com.petrosb.WorkoutPlanner.role.Role;
+import com.petrosb.WorkoutPlanner.role.RoleRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,11 +19,13 @@ public class CustomerService {
     private final CustomerDataAccessService customerDataAccessService;
     private final CustomerDTOMapper customerDTOMapper;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
-    public CustomerService(CustomerDataAccessService customerDataAccessService, CustomerDTOMapper customerDTOMapper, PasswordEncoder passwordEncoder) {
+    public CustomerService(CustomerDataAccessService customerDataAccessService, CustomerDTOMapper customerDTOMapper, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.customerDataAccessService = customerDataAccessService;
         this.customerDTOMapper = customerDTOMapper;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     public List<CustomerDTO> getAllCustomers(){
@@ -42,13 +49,18 @@ public class CustomerService {
             throw new DuplicateResourceException("email already taken");
         }
 
+        Role userRole = roleRepository.findByAuthority("ROLE_USER").get();
+        List<Role> authorities = new ArrayList<>();
+        authorities.add(userRole);
+
         //otherwise add
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
                 passwordEncoder.encode(customerRegistrationRequest.password()),
                 customerRegistrationRequest.age(),
-                customerRegistrationRequest.gender()
+                customerRegistrationRequest.gender(),
+                authorities
         );
         customerDataAccessService.insertCustomer(customer);
 
