@@ -36,7 +36,9 @@ public class SecurityFilterChainConfig {
                         authorizeHttpRequests
                                 .requestMatchers(HttpMethod.POST,
                                         "/api/v1/customers",
-                                        "/api/v1/auth/login")
+                                        "/api/v1/auth/login",
+                                        "/api/v1/auth/refreshtoken"
+                                        )
                                 .permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/v1/customers").hasRole("ADMIN")
                                 .anyRequest()

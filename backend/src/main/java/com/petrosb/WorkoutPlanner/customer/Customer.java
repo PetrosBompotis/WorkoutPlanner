@@ -102,6 +102,8 @@ public class Customer implements UserDetails {
         this.gender = gender;
     }
 
+
+
     public Customer() {
         super();
         this.authorities = new ArrayList<>();

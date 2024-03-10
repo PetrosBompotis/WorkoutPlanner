@@ -16,7 +16,9 @@ import java.util.Map;
 @Service
 public class JWTUtil {
     private static final String SECRET_KEY =
-            "foobar_123456789_foobar_123456789_foobar_123456789_foobar_123456789";
+            "foobar123456789foobar123456789foobar123456789foobar123456789";
+
+    private int jwtExpirationMs = 3600000;
 
     public String issueToken(String subject){
         return issueToken(subject, Map.of());
@@ -38,7 +40,7 @@ public class JWTUtil {
                 .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(
                         Date.from(
-                                Instant.now().plus(15, ChronoUnit.DAYS)
+                                Instant.now().plus(1, ChronoUnit.DAYS)
                         )
                 ).signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
