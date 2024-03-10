@@ -4,6 +4,7 @@ import com.petrosb.WorkoutPlanner.customer.CustomerDTO;
 
 public record AuthenticationResponse(
         String token,
-        CustomerDTO customerDTO
+        CustomerDTO customerDTO,
+        String refreshToken
 ) {
 }
