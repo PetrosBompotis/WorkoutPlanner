@@ -84,34 +84,34 @@ public class SignInFragment extends Fragment {
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 requestBody, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String accessToken = response.getString("token");
-                            String refreshToken = response.getString("refreshToken");
-                            JSONObject customerDTO = response.getJSONObject("customerDTO");
-                            Long id = customerDTO.getLong("id");
-                            JSONArray rolesArray = customerDTO.getJSONArray("roles");
-                            String role = rolesArray.getString(0);
-                            mainActivity.saveTokensToSharedPreferences(accessToken, refreshToken);
-                            mainActivity.saveLoginDataToSharedPreferences(id, role);
-                            Log.d("SignIn", "failure block2");
-                            if (role.equals("ROLE_ADMIN")){
-                                Log.d("SignIn", "failure block3");
-                                mainActivity.redirectToAdminActivity();
-                            }else {
-                                mainActivity.redirectToUserActivity();
-                            }
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String accessToken = response.getString("token");
+                    String refreshToken = response.getString("refreshToken");
+                    JSONObject customerDTO = response.getJSONObject("customerDTO");
+                    Long id = customerDTO.getLong("id");
+                    JSONArray rolesArray = customerDTO.getJSONArray("roles");
+                    String role = rolesArray.getString(0);
+                    mainActivity.saveTokensToSharedPreferences(accessToken, refreshToken);
+                    mainActivity.saveLoginDataToSharedPreferences(id, role);
+                    Log.d("SignIn", "failure block2");
+                    if (role.equals("ROLE_ADMIN")){
+                        Log.d("SignIn", "failure block3");
+                        mainActivity.redirectToAdminActivity();
+                    }else {
+                        mainActivity.redirectToUserActivity();
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("SignIn", "failure block");
-                    }
-                });
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("SignIn", "failure block");
+            }
+        });
 
         requestQueue.add(jsonObjectRequest);
     }

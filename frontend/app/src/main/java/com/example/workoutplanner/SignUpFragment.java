@@ -116,30 +116,30 @@ public class SignUpFragment extends Fragment {
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 requestBody, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("Signup", "User profile created!");
-                        mainActivity.redirectToSignIn();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Signup", "failure block");
-                    }
-                }){
-                    @Override
-                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                        Log.d("Signup", "User profile created!2");
-                        return Response.success(new JSONObject(), HttpHeaderParser.parseCacheHeaders(response));
-                    }
-                };
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Signup", "User profile created!");
+                mainActivity.redirectToSignIn();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Signup", "failure block");
+            }
+        }){
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                Log.d("Signup", "User profile created!2");
+                return Response.success(new JSONObject(), HttpHeaderParser.parseCacheHeaders(response));
+            }
+        };
 
         requestQueue.add(jsonObjectRequest);
     }
 
     private String[] generateNumbersArray() {
         String[] numbers = new String[100];
-        for (int i = 6; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             numbers[i] = String.valueOf(i);
         }
         return numbers;
