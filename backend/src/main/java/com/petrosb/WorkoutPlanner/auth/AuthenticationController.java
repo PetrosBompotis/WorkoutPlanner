@@ -41,12 +41,13 @@ public class AuthenticationController {
     @PostMapping("/refreshtoken")
     public ResponseEntity<?> refreshtoken(@RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.refreshToken();
-
+//TODO:call createRefreshToken to extend lifespand of refresh token without login
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getCustomer)
                 .map(user -> {
                     String token = "";
+                    String refreshToken = "";
                     boolean hasAdminRole = user.getAuthorities().stream()
                             .map(GrantedAuthority::getAuthority)
                             .anyMatch(authority -> authority.equals("ROLE_ADMIN"));
@@ -55,7 +56,8 @@ public class AuthenticationController {
                     }else{
                         token = jwtUtil.issueToken(user.getEmail(),"ROLE_USER");
                     }
-                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                    refreshToken = refreshTokenService.createRefreshToken(user.getId()).getToken();
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, refreshToken));
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
