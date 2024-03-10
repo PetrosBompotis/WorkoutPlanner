@@ -1,5 +1,6 @@
 package com.example.workoutplanner;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -59,12 +60,25 @@ public class SignInFragment extends Fragment {
     }
 
     public void signIn(){
+        String username = emailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(username).matches()) {
+            showMessage("Error", "Invalid email address");
+            return;
+        }
+
+        if (password.length() < 6) {
+            showMessage("Error", "Password must be at least 6 characters long");
+            return;
+        }
+
         String url = "http://10.0.2.2:8080/api/v1/auth/login";
 
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("username", emailEditText.getText().toString().trim());
-            requestBody.put("password", passwordEditText.getText().toString().trim());
+            requestBody.put("username", username);
+            requestBody.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -100,5 +114,9 @@ public class SignInFragment extends Fragment {
                 });
 
         requestQueue.add(jsonObjectRequest);
+    }
+
+    public void showMessage(String title, String message){
+        new AlertDialog.Builder(requireContext()).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 }

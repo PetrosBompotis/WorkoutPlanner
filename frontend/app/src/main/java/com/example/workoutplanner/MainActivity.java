@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         sharedPreferences = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         refreshLoggedUserToken();
-        redirectToSignUp();
     }
 
     private void refreshLoggedUserToken(){
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("RefreshToken", "failure block");
+                        redirectToSignUp();
                     }
                 });
 

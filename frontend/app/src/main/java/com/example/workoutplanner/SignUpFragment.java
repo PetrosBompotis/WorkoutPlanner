@@ -1,5 +1,6 @@
 package com.example.workoutplanner;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -26,8 +29,9 @@ import java.util.Map;
 
 public class SignUpFragment extends Fragment {
     private RequestQueue requestQueue;
-    private EditText usernameEditText, emailEditText, passwordEditText, genderEditText, ageEditText;
+    private EditText usernameEditText, emailEditText, passwordEditText;
     private MainActivity mainActivity;
+    private Spinner genderSpinner, ageSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,14 +44,23 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
         usernameEditText = view.findViewById(R.id.signup_name);
         emailEditText = view.findViewById(R.id.signup_email);
         passwordEditText = view.findViewById(R.id.signup_password);
-        genderEditText = view.findViewById(R.id.signup_gender);
-        ageEditText = view.findViewById(R.id.signup_age);
+        genderSpinner = view.findViewById(R.id.signup_gender_spinner);
+        ageSpinner = view.findViewById(R.id.signup_age_spinner);
+
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_spinner_item, new String[]{"MALE", "FEMALE"});
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(genderAdapter);
+
+        ArrayAdapter<String> ageAdapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_spinner_item, generateNumbersArray());
+        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ageSpinner.setAdapter(ageAdapter);
 
         view.findViewById(R.id.signup_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,15 +80,36 @@ public class SignUpFragment extends Fragment {
     }
 
     private void signUp(){
+        String username = usernameEditText.getText().toString().trim();
+        String email = emailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+        String gender = genderSpinner.getSelectedItem().toString();
+        String age = ageSpinner.getSelectedItem().toString();
+
+        if (username.isEmpty()) {
+            showMessage("Error", "Username cannot be empty");
+            return;
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showMessage("Error", "Invalid email address");
+            return;
+        }
+
+        if (password.length() < 6) {
+            showMessage("Error", "Password must be at least 6 characters long");
+            return;
+        }
+
         String url = "http://10.0.2.2:8080/api/v1/customers";
 
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("name", usernameEditText.getText().toString().trim());
-            requestBody.put("email", emailEditText.getText().toString().trim());
-            requestBody.put("gender", genderEditText.getText().toString().trim());
-            requestBody.put("age", Integer.parseInt(ageEditText.getText().toString().trim()));
-            requestBody.put("password", passwordEditText.getText().toString().trim());
+            requestBody.put("name", username);
+            requestBody.put("email", email);
+            requestBody.put("gender", gender);
+            requestBody.put("age", Integer.parseInt(age));
+            requestBody.put("password", password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,5 +135,17 @@ public class SignUpFragment extends Fragment {
                 };
 
         requestQueue.add(jsonObjectRequest);
+    }
+
+    private String[] generateNumbersArray() {
+        String[] numbers = new String[100];
+        for (int i = 6; i < 100; i++) {
+            numbers[i] = String.valueOf(i);
+        }
+        return numbers;
+    }
+
+    public void showMessage(String title, String message){
+        new AlertDialog.Builder(requireContext()).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 }
