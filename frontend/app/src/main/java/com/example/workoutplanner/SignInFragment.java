@@ -4,61 +4,101 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignInFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class SignInFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SignInFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SignInFragment newInstance(String param1, String param2) {
-        SignInFragment fragment = new SignInFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private RequestQueue requestQueue;
+    private EditText emailEditText, passwordEditText;
+    private MainActivity mainActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        requestQueue = Volley.newRequestQueue(requireContext());
+        mainActivity = (MainActivity) getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_in, container, false);
+        View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+
+        emailEditText = view.findViewById(R.id.login_email);
+        passwordEditText = view.findViewById(R.id.login_password);
+
+        view.findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+
+        view.findViewById(R.id.signupRedirectText).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.redirectToSignUp();
+            }
+        });
+        return view;
+    }
+
+    public void signIn(){
+        String url = "http://10.0.2.2:8080/api/v1/auth/login";
+
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("username", emailEditText.getText().toString().trim());
+            requestBody.put("password", passwordEditText.getText().toString().trim());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                requestBody, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String accessToken = response.getString("token");
+                            String refreshToken = response.getString("refreshToken");
+                            JSONObject customerDTO = response.getJSONObject("customerDTO");
+                            Long id = customerDTO.getLong("id");
+                            JSONArray rolesArray = customerDTO.getJSONArray("roles");
+                            String role = rolesArray.getString(0);
+                            mainActivity.saveTokensToSharedPreferences(accessToken, refreshToken);
+                            mainActivity.saveLoginDataToSharedPreferences(id, role);
+                            Log.d("SignIn", "failure block2");
+                            if (role.equals("ROLE_ADMIN")){
+                                Log.d("SignIn", "failure block3");
+                                mainActivity.redirectToAdminActivity();
+                            }else {
+                                mainActivity.redirectToUserActivity();
+                            }
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("SignIn", "failure block");
+                    }
+                });
+
+        requestQueue.add(jsonObjectRequest);
     }
 }

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".SignUpFragment">
+    tools:context=".SignInFragment">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,12 +39,12 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/login_username"
+                    android:id="@+id/login_email"
                     android:background="@drawable/lavender_border"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="20dp"
                     android:padding="8dp"
-                    android:hint="Username"
-                    android:drawableLeft="@drawable/baseline_account_circle_24"
+                    android:hint="Email"
+                    android:drawableStart="@drawable/baseline_email_24"
                     android:drawablePadding="8dp"
                     android:textColor="@color/black"/>
                 <EditText
@@ -59,15 +59,17 @@
                     android:drawableLeft="@drawable/baseline_account_circle_24"
                     android:drawablePadding="8dp"
                     android:textColor="@color/black"/>
+
                 <Button
+                    android:id="@+id/login_button"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="Login"
-                    android:id="@+id/login_button"
-                    android:textSize="18sp"
                     android:layout_marginTop="30dp"
                     android:backgroundTint="@color/lavender"
-                    app:cornerRadius = "20dp"/>
+                    android:onClick="signIn"
+                    android:text="Login"
+                    android:textSize="18sp"
+                    app:cornerRadius="20dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

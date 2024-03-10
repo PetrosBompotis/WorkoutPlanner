@@ -1,5 +1,6 @@
 package com.petrosb.WorkoutPlanner.refreshToken;
 
+import com.petrosb.WorkoutPlanner.customer.Customer;
 import com.petrosb.WorkoutPlanner.customer.CustomerRepository;
 import com.petrosb.WorkoutPlanner.exception.TokenRefreshException;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import java.util.UUID;
 
 @Service
 public class RefreshTokenService {
-    private Long refreshTokenDurationMs = 86400000L;
     private final RefreshTokenRepository refreshTokenRepository;
     private final CustomerRepository customerRepository;
 
@@ -26,14 +26,26 @@ public class RefreshTokenService {
     }
 
     public RefreshToken createRefreshToken(Long userId) {
-        RefreshToken refreshToken = new RefreshToken();
-
-        refreshToken.setCustomer(customerRepository.findById(userId).get());
-        refreshToken.setExpiryDate(Instant.now().plus(7, ChronoUnit.DAYS));
-        refreshToken.setToken(UUID.randomUUID().toString());
-
-        refreshToken = refreshTokenRepository.save(refreshToken);
-        return refreshToken;
+        Optional<Customer> optionalCustomer = customerRepository.findById(userId);
+        if (optionalCustomer.isPresent()) {
+            Customer customer = optionalCustomer.get();
+            Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByCustomer(customer);
+            if (optionalRefreshToken.isPresent()) {
+                RefreshToken existingToken = optionalRefreshToken.get();
+                existingToken.setToken(UUID.randomUUID().toString());
+                existingToken.setExpiryDate(Instant.now().plus(7, ChronoUnit.DAYS));
+                return refreshTokenRepository.save(existingToken);
+            } else {
+                RefreshToken newRefreshToken = new RefreshToken();
+                newRefreshToken.setCustomer(customer);
+                newRefreshToken.setExpiryDate(Instant.now().plus(7, ChronoUnit.DAYS));
+                newRefreshToken.setToken(UUID.randomUUID().toString());
+                return refreshTokenRepository.save(newRefreshToken);
+            }
+        } else {
+            // Handle case where customer with given userId does not exist
+            throw new RuntimeException("Customer with ID " + userId + " not found");
+        }
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {
