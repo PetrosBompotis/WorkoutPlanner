@@ -110,6 +110,7 @@ public class SignInFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("SignIn", "failure block");
+                showMessage("Error", "Email or Password is invalid");
             }
         });
 
