@@ -34,9 +34,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         holder.exerciseNameTextView.setText(exercise.getExerciseName());
         holder.muscleTextView.setText(exercise.getMuscle());
         holder.equipmentTextView.setText(exercise.getEquipment());
-        // Use an image loading library like Picasso or Glide to load the GIF
-        // For example, using Picasso:
-        // Using Glide to load the GIF
+
         Glide.with(holder.itemView)
                 .load(exercise.getGifUrl())
                 .into(holder.gifImageView);
@@ -59,5 +57,11 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             equipmentTextView = itemView.findViewById(R.id.equipmentTextView);
         }
     }
+
+    public void filterList(List<Exercise> filteredExercises) {
+        exercises = filteredExercises;
+        notifyDataSetChanged();
+    }
+
 }
 

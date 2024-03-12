@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <!-- Your existing SearchView -->
     <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,13 +23,61 @@
         app:closeIcon="@drawable/baseline_clear_24"
         app:searchIcon="@drawable/baseline_manage_search_24"
         />
-
+    <!-- Horizontal LinearLayout to hold spinners -->
+    <LinearLayout
+        android:id="@+id/spinnerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/search"
+        android:layout_marginTop="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Muscle"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:textSize="16dp"
+            android:textColor="@color/lavender"/>
+        <!-- Spinner for Muscle -->
+        <Spinner
+            android:id="@+id/muscleSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/lavender_border"
+            android:padding="8dp"
+            android:textColor="@color/lavender"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Equipment"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:textSize="16dp"
+            android:textColor="@color/lavender"/>
+        <!-- Spinner for Equipment -->
+        <Spinner
+            android:id="@+id/equipmentSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/muscleSpinner"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/lavender_border"
+            android:padding="8dp"
+            android:textColor="@color/lavender"/>
+    </LinearLayout>
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerView"
         android:layout_marginTop="8dp"
         android:scrollbars="vertical"
-        android:layout_below="@id/search"/>
+        android:layout_below="@id/spinnerLayout"/>
 
 </RelativeLayout>

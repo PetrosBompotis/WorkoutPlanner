@@ -2,4 +2,49 @@
     <string name="app_name">WorkoutPlanner</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="equipment_array">
+        <item>any</item>
+        <item>assisted</item>
+        <item>band</item>
+        <item>barbell</item>
+        <item>body_weight</item>
+        <item>bosu_ball</item>
+        <item>cable</item>
+        <item>dumbbell</item>
+        <item>elliptical_machine</item>
+        <item>ez_barbell</item>
+        <item>hammer</item>
+        <item>kettlebell</item>
+        <item>leverage_machine</item>
+        <item>medicine_ball</item>
+        <item>olympic_barbell</item>
+        <item>resistance_band</item>
+        <item>roller</item>
+        <item>rope</item>
+        <item>skierg_machine</item>
+        <item>sled_machine</item>
+        <item>smith_machine</item>
+        <item>stability_ball</item>
+        <item>stationary_bike</item>
+        <item>stepmill_machine</item>
+        <item>tire</item>
+        <item>trap_bar</item>
+        <item>upper_body_ergometer</item>
+        <item>weighted</item>
+        <item>wheel_roller</item>
+    </string-array>
+
+    <string-array name="muscle_array">
+        <item>any</item>
+        <item>back</item>
+        <item>biceps</item>
+        <item>cardio</item>
+        <item>chest</item>
+        <item>core</item>
+        <item>forearms</item>
+        <item>legs</item>
+        <item>neck</item>
+        <item>shoulders</item>
+        <item>triceps</item>
+    </string-array>
 </resources>
