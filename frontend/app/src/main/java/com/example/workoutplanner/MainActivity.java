@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(
                                 MainActivity.this,
                                 sharedPreferences.getString("role", null).equals("ROLE_ADMIN")
-                                        ? ExerciseActivity.class
+                                        ? UserActivity.class
                                         : UserActivity.class);
                         startActivity(intent);
                     }
