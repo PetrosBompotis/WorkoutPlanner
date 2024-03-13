@@ -1,5 +1,7 @@
 package com.example.workoutplanner;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +47,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         return exercises.size();
     }
 
-    static class ExerciseViewHolder extends RecyclerView.ViewHolder {
+    class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView gifImageView;
         TextView exerciseNameTextView, muscleTextView, equipmentTextView;
 
@@ -55,6 +57,24 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             exerciseNameTextView = itemView.findViewById(R.id.exerciseNameTextView);
             muscleTextView = itemView.findViewById(R.id.muscleTextView);
             equipmentTextView = itemView.findViewById(R.id.equipmentTextView);
+
+            // Set click listener for the item
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            // Get the clicked exercise
+            Exercise exercise = exercises.get(getAdapterPosition());
+
+            // Redirect to ExerciseDetailActivity with exercise data
+            Context context = itemView.getContext();
+            Intent intent = new Intent(context, ExerciseDetailActivity.class);
+            intent.putExtra("exerciseName", exercise.getExerciseName());
+            intent.putExtra("muscle", exercise.getMuscle());
+            intent.putExtra("equipment", exercise.getEquipment());
+            intent.putExtra("gifUrl", exercise.getGifUrl());
+            context.startActivity(intent);
         }
     }
 
