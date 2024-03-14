@@ -62,35 +62,19 @@
                     android:layout_weight="0.15"
                     android:text="C"/>
             </LinearLayout>
-            <!-- Horizontal LinearLayout for the routines -->
-            <LinearLayout
-                android:id="@+id/linearLayoutHorizontal"
+            <!-- TabLayout for routines -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayoutRoutines"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                app:tabMode="scrollable"
+                app:tabGravity="fill"/>
 
-                <HorizontalScrollView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutRoutines"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"/>
-                </HorizontalScrollView>
-
-                <!-- Button with text "A" -->
-                <Button
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:text="A"
-                    android:id="@+id/buttonA"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"/>
-            </LinearLayout>
+            <!-- ViewPager for fragments -->
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPagerRoutines"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
