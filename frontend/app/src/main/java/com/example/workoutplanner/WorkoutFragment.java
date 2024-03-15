@@ -1,20 +1,25 @@
 package com.example.workoutplanner;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -29,6 +34,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
@@ -48,6 +54,8 @@ public class WorkoutFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private RoutinePagerAdapter pagerAdapter;
+    private FloatingActionButton floatingActionButton;
+    private Button workoutPlanManageButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,37 +75,25 @@ public class WorkoutFragment extends Fragment {
         workoutPlanSpinner = view.findViewById(R.id.workout_plan_spinner);
         tabLayout = view.findViewById(R.id.tabLayoutRoutines);
         viewPager = view.findViewById(R.id.viewPagerRoutines);
+        floatingActionButton = view.findViewById(R.id.fab_manage_routine);
+        workoutPlanManageButton = view.findViewById(R.id.workout_plan_manage_button);
 
-        loadWorkoutPlans(); // Load workout plans when fragment is created
+        loadWorkoutPlans();
 
-        // Button to create a new workout plan
-        view.findViewById(R.id.workout_plan_create_button).setOnClickListener(new View.OnClickListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewWorkoutPlan();
+                showRoutineBottomDialog();
             }
         });
 
-        view.findViewById(R.id.workout_plan_rename_button).setOnClickListener(new View.OnClickListener() {
+        workoutPlanManageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int selectedPosition = workoutPlanSpinner.getSelectedItemPosition();
                 if (selectedPosition != AdapterView.INVALID_POSITION) {
                     Long workoutPlanId = programIdsList.get(selectedPosition);
-                    updateSelectedWorkoutPlan(workoutPlanId);
-                } else {
-                    showToastLong(requireContext(), "Please select a workout plan to delete.");
-                }
-            }
-        });
-
-        view.findViewById(R.id.workout_plan_delete_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int selectedPosition = workoutPlanSpinner.getSelectedItemPosition();
-                if (selectedPosition != AdapterView.INVALID_POSITION) {
-                    Long workoutPlanId = programIdsList.get(selectedPosition);
-                    deleteWorkoutPlan(workoutPlanId);
+                    showWorkoutBottomDialog(workoutPlanId);
                 } else {
                     showToastLong(requireContext(), "Please select a workout plan to delete.");
                 }
@@ -370,5 +366,109 @@ public class WorkoutFragment extends Fragment {
 
     public void showMessage(String title, String message){
         new AlertDialog.Builder(requireContext()).setTitle(title).setMessage(message).setCancelable(true).show();
+    }
+
+    private void showRoutineBottomDialog() {
+
+        final Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_sheet_layout);
+
+        LinearLayout layoutCreateRoutine = dialog.findViewById(R.id.layoutCreateRoutine);
+        LinearLayout layoutRenameRoutine = dialog.findViewById(R.id.layoutRenameRoutine);
+        LinearLayout layoutDeleteRoutine = dialog.findViewById(R.id.layoutDeleteRoutine);
+        ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
+
+        layoutCreateRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Toast.makeText(requireContext(),"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        layoutRenameRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Toast.makeText(requireContext(),"Create a short is Clicked",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        layoutDeleteRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Toast.makeText(requireContext(),"Go live is Clicked",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
+    }
+
+    private void showWorkoutBottomDialog(Long workoutPlanId) {
+        final Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_sheet_workout_layout);
+
+        LinearLayout layoutCreateWorkout = dialog.findViewById(R.id.layoutCreateWorkout);
+        LinearLayout layoutRenameWorkout = dialog.findViewById(R.id.layoutRenameWorkout);
+        LinearLayout layoutDeleteWorkout = dialog.findViewById(R.id.layoutDeleteWorkout);
+        ImageView cancelButton = dialog.findViewById(R.id.cancelWorkoutButton);
+
+        layoutCreateWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                createNewWorkoutPlan();
+            }
+        });
+
+        layoutRenameWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                updateSelectedWorkoutPlan(workoutPlanId);
+            }
+        });
+
+        layoutDeleteWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                deleteWorkoutPlan(workoutPlanId);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 }

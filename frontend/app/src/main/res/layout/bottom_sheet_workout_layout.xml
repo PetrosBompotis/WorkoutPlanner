@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="viewStart"
-            android:text="Routine"
+            android:text="Workout"
             android:padding="8dp"
             android:textColor="@color/lavender"
             android:layout_marginStart="12dp"
@@ -35,13 +35,13 @@
             android:src="@drawable/baseline_clear_24"
             android:layout_marginLeft="250dp"
             android:layout_marginTop="8dp"
-            android:id="@+id/cancelButton"/>
+            android:id="@+id/cancelWorkoutButton"/>
 
     </LinearLayout>
 
 
     <LinearLayout
-        android:id="@+id/layoutCreateRoutine"
+        android:id="@+id/layoutCreateWorkout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create routine"
+            android:text="Create workout"
             android:textColor="@color/lavender"
             android:layout_marginLeft="30dp"
             android:textSize="16sp"/>
@@ -64,7 +64,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutRenameRoutine"
+        android:id="@+id/layoutRenameWorkout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rename routine"
+            android:text="Rename workout"
             android:textColor="@color/lavender"
             android:layout_marginLeft="30dp"
             android:textSize="16sp"/>
@@ -87,7 +87,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutDeleteRoutine"
+        android:id="@+id/layoutDeleteWorkout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete routine"
+            android:text="Delete workout"
             android:textColor="@color/lavender"
             android:layout_marginLeft="30dp"
             android:textSize="16sp"/>
