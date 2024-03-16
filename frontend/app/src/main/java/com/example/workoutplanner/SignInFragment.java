@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,6 +29,8 @@ public class SignInFragment extends Fragment {
     private RequestQueue requestQueue;
     private EditText emailEditText, passwordEditText;
     private MainActivity mainActivity;
+    private Button signInButton;
+    private TextView signupRedirectTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,24 +43,32 @@ public class SignInFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+        initViews(view);
+        setupListeners();
+        return view;
+    }
 
+    private void initViews(View view) {
         emailEditText = view.findViewById(R.id.login_email);
         passwordEditText = view.findViewById(R.id.login_password);
+        signInButton = view.findViewById(R.id.login_button);
+        signupRedirectTextView = view.findViewById(R.id.signupRedirectText);
+    }
 
-        view.findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
+    private void setupListeners() {
+        signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
             }
         });
 
-        view.findViewById(R.id.signupRedirectText).setOnClickListener(new View.OnClickListener() {
+        signupRedirectTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mainActivity.redirectToSignUp();
             }
         });
-        return view;
     }
 
     public void signIn(){

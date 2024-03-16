@@ -71,7 +71,6 @@ public class ExerciseActivity extends AppCompatActivity {
         muscleSpinner.setAdapter(muscleAdapter);
     }
 
-
     private void setupListeners() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -166,7 +165,6 @@ public class ExerciseActivity extends AppCompatActivity {
         }
         adapter.filterList(filteredExercises);
     }
-
 
     public void showToastLong(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();

@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -32,6 +34,8 @@ public class SignUpFragment extends Fragment {
     private EditText usernameEditText, emailEditText, passwordEditText;
     private MainActivity mainActivity;
     private Spinner genderSpinner, ageSpinner;
+    private Button signUpButton;
+    private TextView loginRedirectTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,13 +49,23 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        initViews(view);
+        populateSpinners();
+        setupListeners();
+        return view;
+    }
 
+    private void initViews(View view) {
         usernameEditText = view.findViewById(R.id.signup_name);
         emailEditText = view.findViewById(R.id.signup_email);
         passwordEditText = view.findViewById(R.id.signup_password);
         genderSpinner = view.findViewById(R.id.signup_gender_spinner);
         ageSpinner = view.findViewById(R.id.signup_age_spinner);
+        signUpButton = view.findViewById(R.id.signup_button);
+        loginRedirectTextView = view.findViewById(R.id.loginRedirectText);
+    }
 
+    private void populateSpinners() {
         ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_spinner_item, new String[]{"MALE", "FEMALE"});
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -61,22 +75,22 @@ public class SignUpFragment extends Fragment {
                 android.R.layout.simple_spinner_item, generateNumbersArray());
         ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ageSpinner.setAdapter(ageAdapter);
+    }
 
-        view.findViewById(R.id.signup_button).setOnClickListener(new View.OnClickListener() {
+    private void setupListeners() {
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signUp();
             }
         });
 
-        view.findViewById(R.id.loginRedirectText).setOnClickListener(new View.OnClickListener() {
+        loginRedirectTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 mainActivity.redirectToSignIn();
             }
         });
-        return view;
     }
 
     private void signUp(){

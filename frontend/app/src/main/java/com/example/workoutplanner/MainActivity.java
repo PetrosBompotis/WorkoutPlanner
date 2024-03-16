@@ -24,7 +24,6 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private static final String SHARED_PREFS_NAME = "MyPreferences";
-
     RequestQueue requestQueue;
     SharedPreferences sharedPreferences;
 
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(
                                 MainActivity.this,
                                 sharedPreferences.getString("role", null).equals("ROLE_ADMIN")
-                                        ? UserActivity.class
+                                        ? AdminActivity.class
                                         : UserActivity.class);
                         startActivity(intent);
                     }
@@ -100,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
     }
+
     public void redirectToAdminActivity(){
         Intent intent = new Intent(this, AdminActivity.class);
         startActivity(intent);
