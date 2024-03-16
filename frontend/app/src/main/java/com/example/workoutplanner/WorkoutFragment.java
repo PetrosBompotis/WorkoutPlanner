@@ -3,6 +3,7 @@ package com.example.workoutplanner;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -54,7 +55,7 @@ public class WorkoutFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private RoutinePagerAdapter pagerAdapter;
-    private FloatingActionButton floatingActionButton;
+    private FloatingActionButton floatingActionButtonManageRoutine, floatingActionButtonAddExercise;
     private Button workoutPlanManageButton;
 
     @Override
@@ -75,16 +76,27 @@ public class WorkoutFragment extends Fragment {
         workoutPlanSpinner = view.findViewById(R.id.workout_plan_spinner);
         tabLayout = view.findViewById(R.id.tabLayoutRoutines);
         viewPager = view.findViewById(R.id.viewPagerRoutines);
-        floatingActionButton = view.findViewById(R.id.fab_manage_routine);
+        floatingActionButtonManageRoutine = view.findViewById(R.id.fab_manage_routine);
+        floatingActionButtonAddExercise = view.findViewById(R.id.fabAddExercise);
         workoutPlanManageButton = view.findViewById(R.id.workout_plan_manage_button);
 
         loadWorkoutPlans();
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        floatingActionButtonManageRoutine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Long routineId = getSelectedRoutineId();
                 showRoutineBottomDialog(routineId);
+            }
+        });
+
+        floatingActionButtonAddExercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Long routineId = getSelectedRoutineId();
+                Intent intent = new Intent(requireContext(), ExerciseActivity.class);
+                intent.putExtra("routineId", routineId);
+                startActivity(intent);
             }
         });
 

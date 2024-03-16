@@ -7,72 +7,81 @@
     android:layout_height="match_parent"
     tools:context=".WorkoutFragment">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/linearLayoutWorkoutPlan"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayoutWorkoutPlan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/workout_plan_spinner"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/lavender_border"
+                android:padding="8dp"
+                android:textColor="@color/lavender"/>
+
+            <Button
+                android:id="@+id/workout_plan_manage_button"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-
-                <Spinner
-                    android:id="@+id/workout_plan_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/lavender_border"
-                    android:padding="8dp"
-                    android:textColor="@color/lavender"/>
-
-                <Button
-                    android:id="@+id/workout_plan_manage_button"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="20dp"
-                    android:text="+"/>
-            </LinearLayout>
-            <!-- Modified layout for TabLayout and Button -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayoutRoutines"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:tabMode="scrollable"
-                    app:tabGravity="fill"/>
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_manage_routine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:src="@drawable/baseline_more_vert_24"  />
-            </LinearLayout>
-
-            <!-- ViewPager for fragments -->
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPagerRoutines"
-                android:layout_width="match_parent"
-                android:layout_height="500dp" />
+                android:layout_marginLeft="10dp"
+                android:textSize="20dp"
+                android:text="+"/>
         </LinearLayout>
-    </ScrollView>
+
+        <!-- Modified layout for TabLayout and Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayoutRoutines"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:tabMode="scrollable"
+                app:tabGravity="fill"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_manage_routine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:src="@drawable/baseline_more_vert_24"  />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ViewPager for fragments -->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPagerRoutines"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutWorkoutPlan"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- FAB at the bottom and center of ViewPager -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddExercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:src="@drawable/baseline_add_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>
