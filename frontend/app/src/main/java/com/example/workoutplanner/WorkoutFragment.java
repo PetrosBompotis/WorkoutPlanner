@@ -1,18 +1,26 @@
 package com.example.workoutplanner;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.LongDef;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -27,6 +35,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,8 +52,11 @@ public class WorkoutFragment extends Fragment {
     private Spinner workoutPlanSpinner;
     private ArrayList<String> programNamesList, routineNamesList;
     private ArrayList<Long> programIdsList, routineIdsList;
-    private LinearLayout linearLayoutRoutines;
-    private Long routineId;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private RoutinePagerAdapter pagerAdapter;
+    private FloatingActionButton floatingActionButton;
+    private Button workoutPlanManageButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +67,6 @@ public class WorkoutFragment extends Fragment {
         programIdsList = new ArrayList<>();
         routineNamesList = new ArrayList<>();
         routineIdsList = new ArrayList<>();
-        routineId = 0L;
     }
 
     @Override
@@ -62,47 +74,26 @@ public class WorkoutFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_workout, container, false);
         workoutPlanSpinner = view.findViewById(R.id.workout_plan_spinner);
-        linearLayoutRoutines = view.findViewById(R.id.linearLayoutRoutines);
-        loadWorkoutPlans(); // Load workout plans when fragment is created
+        tabLayout = view.findViewById(R.id.tabLayoutRoutines);
+        viewPager = view.findViewById(R.id.viewPagerRoutines);
+        floatingActionButton = view.findViewById(R.id.fab_manage_routine);
+        workoutPlanManageButton = view.findViewById(R.id.workout_plan_manage_button);
 
-        // Button to create a new workout plan
-        view.findViewById(R.id.workout_plan_create_button).setOnClickListener(new View.OnClickListener() {
+        loadWorkoutPlans();
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewWorkoutPlan();
+                Long routineId = getSelectedRoutineId();
+                showRoutineBottomDialog(routineId);
             }
         });
 
-        view.findViewById(R.id.buttonA).setOnClickListener(new View.OnClickListener() {
+        workoutPlanManageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteRoutine(routineId);
-            }
-        });
-
-        view.findViewById(R.id.workout_plan_rename_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int selectedPosition = workoutPlanSpinner.getSelectedItemPosition();
-                if (selectedPosition != AdapterView.INVALID_POSITION) {
-                    Long workoutPlanId = programIdsList.get(selectedPosition);
-                    updateSelectedWorkoutPlan(workoutPlanId);
-                } else {
-                    showToastLong(requireContext(), "Please select a workout plan to delete.");
-                }
-            }
-        });
-
-        view.findViewById(R.id.workout_plan_delete_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int selectedPosition = workoutPlanSpinner.getSelectedItemPosition();
-                if (selectedPosition != AdapterView.INVALID_POSITION) {
-                    Long workoutPlanId = programIdsList.get(selectedPosition);
-                    deleteWorkoutPlan(workoutPlanId);
-                } else {
-                    showToastLong(requireContext(), "Please select a workout plan to delete.");
-                }
+                Long workoutPlanId = getSelectedWorkoutPlanId();
+                showWorkoutBottomDialog(workoutPlanId);
             }
         });
 
@@ -141,6 +132,9 @@ public class WorkoutFragment extends Fragment {
                                 String programName = workoutPlanJson.getString("programName");
                                 programNamesList.add(programName);
                                 programIdsList.add(id);
+                            }
+                            if (programNamesList.isEmpty()){
+                                createNewWorkoutPlan();
                             }
                             // Populate spinner after getting all program names
                             ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, programNamesList);
@@ -276,14 +270,7 @@ public class WorkoutFragment extends Fragment {
     }
 
     private void loadRoutines(){
-        int selectedPosition = workoutPlanSpinner.getSelectedItemPosition();
-        Long workoutPlanId = 1L;
-        if (selectedPosition != AdapterView.INVALID_POSITION) {
-            workoutPlanId = programIdsList.get(selectedPosition);
-        } else {
-            showToastLong(requireContext(), "Please select a workout plan to delete.");
-        }
-        routineId = 0L;
+        Long workoutPlanId = getSelectedWorkoutPlanId();
         String url = "http://10.0.2.2:8080/api/v1/workoutPlans/"+workoutPlanId+"/routines";
         String accessToken = userActivity.sharedPreferences.getString("accessToken", "");
 
@@ -295,7 +282,6 @@ public class WorkoutFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-                            linearLayoutRoutines.removeAllViews();
                             routineIdsList.clear();
                             routineNamesList.clear();
                             for (int i = 0; i < response.length(); i++) {
@@ -304,23 +290,21 @@ public class WorkoutFragment extends Fragment {
                                 String routineName = routineJson.getString("routineName");
                                 routineNamesList.add(routineName);
                                 routineIdsList.add(id);
-                                // Create a button for each routine
-                                Button button = new Button(requireContext());
-                                button.setLayoutParams(new ViewGroup.LayoutParams(
-                                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                                        ViewGroup.LayoutParams.WRAP_CONTENT));
-                                button.setText(routineName);
-                                button.setTag(id); // Set tag with routine ID
-                                button.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        // Handle button click
-                                        routineId = (Long) v.getTag();
-                                        showToastLong(requireContext(), "Clicked: " + routineName);
-                                    }
-                                });
-                                linearLayoutRoutines.addView(button);
                             }
+                            if (routineNamesList.isEmpty()){
+                                createNewRoutine();
+                            }
+                            // Create a new adapter for the ViewPager
+                            pagerAdapter = new RoutinePagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+                            pagerAdapter.setRoutineIdsList(routineIdsList);
+                            pagerAdapter.setRoutineNamesList(routineNamesList);
+                            viewPager.setAdapter(pagerAdapter);
+
+                            // Link the TabLayout and ViewPager
+                            tabLayout.setupWithViewPager(viewPager);
+
+                            // Notify the adapter that the data set has changed
+                            pagerAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -341,10 +325,6 @@ public class WorkoutFragment extends Fragment {
     }
 
     private void deleteRoutine(Long routineId) {
-        if (routineId == 0L){
-            showToastLong(requireContext(), "no routine selected");
-            return;
-        }
         String url = "http://10.0.2.2:8080/api/v1/routines/" + routineId;
 
         StringRequest deleteRequest = new StringRequest(Request.Method.DELETE, url,
@@ -372,11 +352,221 @@ public class WorkoutFragment extends Fragment {
         requestQueue.add(deleteRequest);
     }
 
+    private void createNewRoutine(){
+        Long workoutPlanId = getSelectedWorkoutPlanId();
+        String url = "http://10.0.2.2:8080/api/v1/workoutPlans/"+workoutPlanId+"/routines";
+
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("routineName", "Routine S");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        showToastLong(requireContext(), "Routine created successfully");
+                        loadRoutines();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showMessage("requireContext()", "Error creating routine: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                return Response.success(new JSONObject(), HttpHeaderParser.parseCacheHeaders(response));
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + userActivity.sharedPreferences.getString("accessToken", ""));
+                return headers;
+            }
+        };
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void updateSelectedRoutine(Long routineId){
+        String url = "http://10.0.2.2:8080/api/v1/routines/"+routineId;
+        String accessToken = userActivity.sharedPreferences.getString("accessToken", "");
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + accessToken);
+
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("routineName", "newRoutineName");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        showToastLong(requireContext(), "Workout plan updated successfully");
+                        loadRoutines();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showToastLong(requireContext(), "Error updating workout plan: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                return Response.success(new JSONObject(), HttpHeaderParser.parseCacheHeaders(response));
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                return headers;
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+    }
+
     public void showToastLong(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
     public void showMessage(String title, String message){
         new AlertDialog.Builder(requireContext()).setTitle(title).setMessage(message).setCancelable(true).show();
+    }
+
+    private void showRoutineBottomDialog(Long routineId) {
+
+        final Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_sheet_layout);
+
+        LinearLayout layoutCreateRoutine = dialog.findViewById(R.id.layoutCreateRoutine);
+        LinearLayout layoutRenameRoutine = dialog.findViewById(R.id.layoutRenameRoutine);
+        LinearLayout layoutDeleteRoutine = dialog.findViewById(R.id.layoutDeleteRoutine);
+        ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
+
+        layoutCreateRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                createNewRoutine();
+
+            }
+        });
+
+        layoutRenameRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                updateSelectedRoutine(routineId);
+
+            }
+        });
+
+        layoutDeleteRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                if (routineNamesList.size() >= 2) {
+                    deleteRoutine(routineId);
+                } else {
+                    showToastLong(requireContext(), "You need to have at least one routine.");
+                }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void showWorkoutBottomDialog(Long workoutPlanId) {
+        final Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_sheet_workout_layout);
+
+        LinearLayout layoutCreateWorkout = dialog.findViewById(R.id.layoutCreateWorkout);
+        LinearLayout layoutRenameWorkout = dialog.findViewById(R.id.layoutRenameWorkout);
+        LinearLayout layoutDeleteWorkout = dialog.findViewById(R.id.layoutDeleteWorkout);
+        ImageView cancelButton = dialog.findViewById(R.id.cancelWorkoutButton);
+
+        layoutCreateWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                createNewWorkoutPlan();
+            }
+        });
+
+        layoutRenameWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                updateSelectedWorkoutPlan(workoutPlanId);
+            }
+        });
+
+        layoutDeleteWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (programNamesList.size() >= 2) {
+                    deleteWorkoutPlan(workoutPlanId);
+                } else {
+                    showToastLong(requireContext(), "You need to have at least one workout plan.");
+                }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private Long getSelectedWorkoutPlanId(){
+        int selectedSpinnerPosition = workoutPlanSpinner.getSelectedItemPosition();
+        if (selectedSpinnerPosition != AdapterView.INVALID_POSITION) {
+            Long workoutPlanId = programIdsList.get(selectedSpinnerPosition);
+            return workoutPlanId;
+        } else {
+            showToastLong(requireContext(), "Please select a workout plan to delete.");
+            return 0L;
+        }
+    }
+
+    private Long getSelectedRoutineId(){
+        int selectedTabPosition = viewPager.getCurrentItem();
+        if (selectedTabPosition >= 0 && selectedTabPosition < routineIdsList.size()) {
+            Long routineId = routineIdsList.get(selectedTabPosition);
+            return routineId;
+        } else {
+            showToastLong(requireContext(), "Please select a routine to manage routine.");
+            return 0L;
+        }
     }
 }

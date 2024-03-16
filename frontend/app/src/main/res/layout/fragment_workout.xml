@@ -31,66 +31,48 @@
                     android:id="@+id/workout_plan_spinner"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:layout_weight="0.55"
+                    android:layout_weight="1"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/lavender_border"
                     android:padding="8dp"
                     android:textColor="@color/lavender"/>
 
                 <Button
-                    android:id="@+id/workout_plan_delete_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.15"
-                    android:layout_marginLeft="10dp"
-                    android:text="D"/>
-
-                <Button
-                    android:id="@+id/workout_plan_rename_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="0.15"
-                    android:text="R"/>
-
-                <Button
-                    android:id="@+id/workout_plan_create_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="0.15"
-                    android:text="C"/>
-            </LinearLayout>
-            <!-- Horizontal LinearLayout for the routines -->
-            <LinearLayout
-                android:id="@+id/linearLayoutHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <HorizontalScrollView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutRoutines"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"/>
-                </HorizontalScrollView>
-
-                <!-- Button with text "A" -->
-                <Button
+                    android:id="@+id/workout_plan_manage_button"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:text="A"
-                    android:id="@+id/buttonA"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"/>
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20dp"
+                    android:text="+"/>
             </LinearLayout>
+            <!-- Modified layout for TabLayout and Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayoutRoutines"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:tabMode="scrollable"
+                    app:tabGravity="fill"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_manage_routine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/baseline_more_vert_24"  />
+            </LinearLayout>
+
+            <!-- ViewPager for fragments -->
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPagerRoutines"
+                android:layout_width="match_parent"
+                android:layout_height="500dp" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
