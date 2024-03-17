@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.NetworkResponse;
@@ -19,18 +20,25 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ExerciseDetailActivity extends AppCompatActivity {
+    private static final String SHARED_PREFS_NAME = "MyPreferences";
+    RequestQueue requestQueue;
+    SharedPreferences sharedPreferences;
     Button exerciseDoneButton, exerciseDeleteButton, addSetButton;
     TextView exerciseNameTextView, muscleTextView, setTextView;
     ImageView exerciseGifImageView;
@@ -38,10 +46,9 @@ public class ExerciseDetailActivity extends AppCompatActivity {
     EditText instructionsEditText;
     Long routineId, exerciseId;
     String exerciseName, muscle, equipment, gifUrl, instructions;
-    private static final String SHARED_PREFS_NAME = "MyPreferences";
-    RequestQueue requestQueue;
-    SharedPreferences sharedPreferences;
     Boolean isNew;
+    private List<Set> setList;
+    private SetAdapter setAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +65,13 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         exerciseGifImageView = findViewById(R.id.exerciseGifImageView);
         setTextView = findViewById(R.id.setTextView);
         setRecyclerView = findViewById(R.id.setRecyclerView);
-        addSetButton = findViewById(R.id.sddSetButton);
+        setRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        addSetButton = findViewById(R.id.addSetButton);
         instructionsEditText = findViewById(R.id.instructionsEditText);
 
         setUpListeners();
         initializeExtras();
+        loadSets();
     }
 
     private void initializeExtras() {
@@ -81,7 +90,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                 exerciseDeleteButton.setVisibility(View.GONE);
             }
 
-            exerciseNameTextView.setText(routineId.toString());
+            exerciseNameTextView.setText(exerciseId.toString());
             muscleTextView.setText(muscle);
             Glide.with(this).load(gifUrl).into(exerciseGifImageView);
             instructionsEditText.setText(instructions);
@@ -222,5 +231,48 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         };
 
         requestQueue.add(deleteRequest);
+    }
+
+    private void loadSets() {
+        setList = new ArrayList<>();
+        String url = "http://10.0.2.2:8080/api/v1/exercises/"+exerciseId+"/sets";
+        String accessToken = sharedPreferences.getString("accessToken", "");
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + accessToken);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject exerciseJson = response.getJSONObject(i);
+                                Long setId = exerciseJson.getLong("id");
+                                Integer reps = exerciseJson.getInt("reps");
+                                Integer numberOfSets = exerciseJson.getInt("numberOfSets");
+                                Double weight = exerciseJson.getDouble("weight");
+
+                                setList.add(new Set(setId,reps,numberOfSets,weight));
+                            }
+                            setAdapter = new SetAdapter(setList);
+                            setRecyclerView.setAdapter(setAdapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return headers;
+            }
+        };
+
+        requestQueue.add(jsonArrayRequest);
     }
 }
