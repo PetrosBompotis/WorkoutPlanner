@@ -80,14 +80,16 @@ public class RoutineFragment extends Fragment {
                             exerciseList.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject exerciseJson = response.getJSONObject(i);
+                                Long exerciseId = exerciseJson.getLong("id");
                                 String exerciseName = exerciseJson.getString("exerciseName");
                                 String muscle = exerciseJson.getString("muscle");
                                 String equipment = exerciseJson.getString("equipment");
                                 String gifUrl = exerciseJson.getString("gifUrl");
+                                String instructions = exerciseJson.getString("instructions");
 
-                                exerciseList.add(new Exercise(exerciseName, muscle, equipment, gifUrl));
+                                exerciseList.add(new Exercise(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
-                            adapter = new ExerciseAdapter(exerciseList);
+                            adapter = new ExerciseAdapter(exerciseList, routineId, false);
                             recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();

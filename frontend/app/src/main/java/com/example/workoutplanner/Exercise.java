@@ -5,12 +5,16 @@ public class Exercise {
     private String muscle;
     private String equipment;
     private String gifUrl;
+    private String instructions;
+    private Long exerciseId;
 
-    public Exercise(String exerciseName, String muscle, String equipment, String gifUrl) {
+    public Exercise(String exerciseName, String muscle, String equipment, String gifUrl, String instructions, Long exerciseId) {
         this.exerciseName = exerciseName;
         this.muscle = muscle;
         this.equipment = equipment;
         this.gifUrl = gifUrl;
+        this.instructions = instructions;
+        this.exerciseId = exerciseId;
     }
 
     public String getExerciseName() {
@@ -27,6 +31,14 @@ public class Exercise {
 
     public String getGifUrl() {
         return gifUrl;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public Long getExerciseId() {
+        return exerciseId;
     }
 }
 

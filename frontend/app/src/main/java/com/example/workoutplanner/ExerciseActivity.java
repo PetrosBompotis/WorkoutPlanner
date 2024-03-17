@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +42,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private SearchView searchView;
     private Spinner equipmentSpinner;
     private Spinner muscleSpinner;
+    private Long routineId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
         setupListeners();
         instantiateSpinners();
+        initializeExtras();
         loadExercises();
     }
 
@@ -69,6 +72,13 @@ public class ExerciseActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> muscleAdapter = ArrayAdapter.createFromResource(this, R.array.muscle_array, android.R.layout.simple_spinner_item);
         muscleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         muscleSpinner.setAdapter(muscleAdapter);
+    }
+
+    private void initializeExtras() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            routineId = extras.getLong("routineId");
+        }
     }
 
     private void setupListeners() {
@@ -126,14 +136,16 @@ public class ExerciseActivity extends AppCompatActivity {
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject exerciseJson = response.getJSONObject(i);
+                                Long exerciseId = exerciseJson.getLong("id");
                                 String exerciseName = exerciseJson.getString("exerciseName");
                                 String muscle = exerciseJson.getString("muscle");
                                 String equipment = exerciseJson.getString("equipment");
                                 String gifUrl = exerciseJson.getString("gifUrl");
+                                String instructions = exerciseJson.getString("instructions");
 
-                                exerciseList.add(new Exercise(exerciseName, muscle, equipment, gifUrl));
+                                exerciseList.add(new Exercise(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
-                            adapter = new ExerciseAdapter(exerciseList);
+                            adapter = new ExerciseAdapter(exerciseList, routineId, true);
                             recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
