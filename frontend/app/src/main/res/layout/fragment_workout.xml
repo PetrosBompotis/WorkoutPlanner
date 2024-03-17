@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/lavender_border"
                 android:padding="8dp"
                 android:textColor="@color/lavender"/>
@@ -34,8 +34,8 @@
                 android:id="@+id/workout_plan_manage_button"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:textSize="20dp"
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
                 android:text="+"/>
         </LinearLayout>
 
@@ -59,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
+                android:contentDescription="@string/manage_routine_options"
                 android:src="@drawable/baseline_more_vert_24"  />
         </LinearLayout>
     </LinearLayout>
@@ -83,5 +84,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        android:src="@drawable/baseline_add_24" />
+        android:src="@drawable/baseline_add_24"
+        android:contentDescription="@string/add_exercise" />
 </androidx.constraintlayout.widget.ConstraintLayout>
