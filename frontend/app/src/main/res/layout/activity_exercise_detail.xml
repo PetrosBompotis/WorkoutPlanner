@@ -7,25 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".ExerciseDetailActivity">
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/exerciseDoneButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Done"
+        android:text="@string/done"
         android:textSize="17sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"/>
 
-    <!-- Button 2 -->
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/exerciseDeleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete"
+        android:text="@string/delete"
         android:textSize="17sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button1"
+        app:layout_constraintEnd_toStartOf="@id/exerciseDoneButton"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"/>
 
@@ -35,7 +34,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button1">
+        app:layout_constraintTop_toBottomOf="@id/exerciseDoneButton">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,21 +42,21 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/exerciseNameTextView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
-                android:text="TextView 1"
+                android:text="Exercise name textView"
                 android:textSize="20sp"/>
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/muscleTextView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
-                android:text="TextView 2"
+                android:text="Muscle textView"
                 android:textSize="20sp"/>
 
             <LinearLayout
@@ -67,7 +66,7 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/exerciseGifImageView"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/exercise"
@@ -78,16 +77,16 @@
                     android:contentDescription="@string/illustration_of_exercise" />
             </LinearLayout>
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/setTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
-                android:text="TextView 3"
+                android:text="Set textView"
                 android:textSize="20sp"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/setRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -96,7 +95,7 @@
                 android:layout_marginBottom="10dp" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/sddSetButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -105,7 +104,7 @@
                 android:textSize="17sp"/>
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/instructionsEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -116,7 +115,6 @@
                 android:lines="5"
                 android:gravity="top|start"
                 android:hint="Enter text here" />
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

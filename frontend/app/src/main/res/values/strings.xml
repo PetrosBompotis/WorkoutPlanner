@@ -20,6 +20,8 @@
     <string name="delete_routine">Delete routine</string>
     <string name="cancel_button">Cancel button</string>
     <string name="illustration_of_exercise">Illustration of exercise</string>
+    <string name="done">Done</string>
+    <string name="delete">Delete</string>
     <string-array name="equipment_array">
         <item>any</item>
         <item>assisted</item>
