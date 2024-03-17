@@ -2,6 +2,26 @@
     <string name="app_name">WorkoutPlanner</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="already_an_user_login">Already an user? Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="choose_your_age">Choose your age:</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <string name="not_yet_registered_sign_up">Not yet registered? Sign Up</string>
+    <string name="manage_routine_options">Manage Routine Options</string>
+    <string name="add_exercise">Add Exercise</string>
+    <string name="muscle">Muscle</string>
+    <string name="equipment">Equipment</string>
+    <string name="routine">Routine</string>
+    <string name="create_routine">Create routine</string>
+    <string name="rename_routine">Rename routine</string>
+    <string name="delete_routine">Delete routine</string>
+    <string name="cancel_button">Cancel button</string>
+    <string name="illustration_of_exercise">Illustration of exercise</string>
+    <string name="done">Done</string>
+    <string name="delete">Delete</string>
     <string-array name="equipment_array">
         <item>any</item>
         <item>assisted</item>

@@ -18,9 +18,14 @@ import java.util.List;
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> {
 
     private List<Exercise> exercises;
+    private Long routineId;
 
-    public ExerciseAdapter(List<Exercise> exercises) {
+    private Boolean isNew;
+
+    public ExerciseAdapter(List<Exercise> exercises, Long routineId, Boolean isNew) {
         this.exercises = exercises;
+        this.routineId = routineId;
+        this.isNew = isNew;
     }
 
     @NonNull
@@ -70,10 +75,14 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             // Redirect to ExerciseDetailActivity with exercise data
             Context context = itemView.getContext();
             Intent intent = new Intent(context, ExerciseDetailActivity.class);
+            intent.putExtra("exerciseId", exercise.getExerciseId());
             intent.putExtra("exerciseName", exercise.getExerciseName());
             intent.putExtra("muscle", exercise.getMuscle());
             intent.putExtra("equipment", exercise.getEquipment());
             intent.putExtra("gifUrl", exercise.getGifUrl());
+            intent.putExtra("instructions", exercise.getInstructions());
+            intent.putExtra("routineId", routineId);
+            intent.putExtra("isNew", isNew);
             context.startActivity(intent);
         }
     }
