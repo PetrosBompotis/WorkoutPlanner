@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:background="@drawable/lavender_border"
     android:layout_marginRight="10dp"
     android:layout_marginLeft="10dp"
@@ -72,5 +72,15 @@
             android:textSize="16sp"
             android:text="Kg"
             android:textStyle="bold"/>
+
+        <!-- Delete Button -->
+        <ImageButton
+            android:id="@+id/deleteSetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_delete_forever_24"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:contentDescription="delete_button_description"/>
     </LinearLayout>
 </LinearLayout>

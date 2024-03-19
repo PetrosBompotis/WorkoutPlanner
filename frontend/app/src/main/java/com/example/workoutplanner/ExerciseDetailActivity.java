@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +122,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         addSetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle click for addSetButton
+                createNewSet();
             }
         });
     }
@@ -190,9 +193,22 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                // Parse the error response
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    try {
+                        String errorResponse = new String(error.networkResponse.data, HttpHeaderParser.parseCharset(error.networkResponse.headers));
+                        JSONObject errorObject = new JSONObject(errorResponse);
+                        if (errorObject.has("message") && errorObject.getString("message").equals("no data changes found")) {
+                            // Redirect to UserActivity
+                            Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
+                            startActivity(intent);
+                        }
+                    } catch (UnsupportedEncodingException | JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }) {
+        })  {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 return Response.success(new JSONObject(), HttpHeaderParser.parseCacheHeaders(response));
@@ -275,4 +291,75 @@ public class ExerciseDetailActivity extends AppCompatActivity {
 
         requestQueue.add(jsonArrayRequest);
     }
+
+    private void createNewSet(){
+        String url = "http://10.0.2.2:8080/api/v1/exercises/"+exerciseId+"/sets";
+
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("reps", 0);
+            requestBody.put("numberOfSets", 0);
+            requestBody.put("weight", 0.0);
+            requestBody.put("kilometers", null);
+            requestBody.put("time", null);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        loadSets();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                return Response.success(new JSONObject(), HttpHeaderParser.parseCacheHeaders(response));
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + sharedPreferences.getString("accessToken", ""));
+                return headers;
+            }
+        };
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void deleteSet(Long setId){
+        String url = "http://10.0.2.2:8080/api/v1/sets/"+setId;
+
+        StringRequest deleteRequest = new StringRequest(Request.Method.DELETE, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        loadSets();
+                        Log.d("delete set success", "set deleted");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + sharedPreferences.getString("accessToken", ""));
+                return headers;
+            }
+        };
+
+        requestQueue.add(deleteRequest);
+    }
+
+
 }
