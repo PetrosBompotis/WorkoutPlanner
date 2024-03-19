@@ -361,8 +361,8 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         requestQueue.add(deleteRequest);
     }
 
-    public void updateSet(Long setId){
-        String url = "http://10.0.2.2:8080/api/v1/sets/"+setId;
+    public void updateSet(Set set){
+        String url = "http://10.0.2.2:8080/api/v1/sets/"+set.getId();
         String accessToken = sharedPreferences.getString("accessToken", "");
 
         Map<String, String> headers = new HashMap<>();
@@ -370,9 +370,9 @@ public class ExerciseDetailActivity extends AppCompatActivity {
 
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("reps", 2);
-            requestBody.put("numberOfSets", 2);
-            requestBody.put("weight", 3.2);
+            requestBody.put("reps", set.getReps());
+            requestBody.put("numberOfSets", set.getNumberOfSets());
+            requestBody.put("weight", set.getWeight());
         } catch (JSONException e) {
             e.printStackTrace();
         }

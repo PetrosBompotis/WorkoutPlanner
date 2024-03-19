@@ -31,7 +31,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetViewHolder> {
         holder.setsEditText.setText(set.getNumberOfSets().toString());
         holder.weightEditText.setText(set.getWeight().toString());
         holder.deleteSetImageButton.setTag(set.getId().toString());
-        holder.updateSetImageButton.setTag(set.getId().toString());
+        holder.updateSetImageButton.setTag(set);
     }
 
     @Override

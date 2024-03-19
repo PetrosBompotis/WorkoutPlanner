@@ -28,4 +28,16 @@ public class Set {
     public Double getWeight() {
         return weight;
     }
+
+    public void setReps(Integer reps) {
+        this.reps = reps;
+    }
+
+    public void setNumberOfSets(Integer numberOfSets) {
+        this.numberOfSets = numberOfSets;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
 }

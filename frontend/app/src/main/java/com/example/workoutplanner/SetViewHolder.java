@@ -9,16 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SetViewHolder extends RecyclerView.ViewHolder {
-    TextView repsTextView, setsTextView, weightTextView;
     EditText repsEditText, setsEditText, weightEditText;
     ImageButton deleteSetImageButton, updateSetImageButton;
 
     public SetViewHolder(@NonNull View itemView) {
         super(itemView);
-        repsTextView = itemView.findViewById(R.id.repsTextView);
-        setsTextView = itemView.findViewById(R.id.setsTextView);
-        weightTextView = itemView.findViewById(R.id.weightTextView);
-
         repsEditText = itemView.findViewById(R.id.repsEditText);
         setsEditText = itemView.findViewById(R.id.setsEditText);
         weightEditText = itemView.findViewById(R.id.weightEditText);
@@ -35,8 +30,38 @@ public class SetViewHolder extends RecyclerView.ViewHolder {
         updateSetImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String setId = (String) v.getTag();
-                ((ExerciseDetailActivity)itemView.getContext()).updateSet(Long.parseLong(setId));
+                // Retrieve the Set object associated with this view holder
+                Set set = (Set) v.getTag();
+
+                // Retrieve values from EditText fields
+                String repsValue = "";
+                String setsValue = "";
+                String weightValue = "";
+
+                if (repsEditText.getText() != null && !repsEditText.getText().toString().isEmpty()) {
+                    repsValue = repsEditText.getText().toString();
+                }
+
+                if (setsEditText.getText() != null && !setsEditText.getText().toString().isEmpty()) {
+                    setsValue = setsEditText.getText().toString();
+                }
+
+                if (weightEditText.getText() != null && !weightEditText.getText().toString().isEmpty()) {
+                    weightValue = weightEditText.getText().toString();
+                }
+
+                // Convert values to appropriate types and update the Set object
+                int reps = repsValue.isEmpty() ? 0 : Integer.parseInt(repsValue);
+                int sets = setsValue.isEmpty() ? 0 : Integer.parseInt(setsValue);
+                double weight = weightValue.isEmpty() ? 0.0 : Double.parseDouble(weightValue);
+
+                // Update the Set object
+                set.setReps(reps);
+                set.setNumberOfSets(sets);
+                set.setWeight(weight);
+
+                // Call the updateSet method of ExerciseDetailActivity
+                ((ExerciseDetailActivity)itemView.getContext()).updateSet(set);
             }
         });
     }
