@@ -41,8 +41,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/exerciseNameTextView2"
+            <EditText
+                android:id="@+id/exerciseNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -95,7 +95,7 @@
                 android:layout_marginBottom="10dp" />
 
             <Button
-                android:id="@+id/sddSetButton"
+                android:id="@+id/addSetButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"

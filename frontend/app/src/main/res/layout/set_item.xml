@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/lavender_border"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginBottom="10dp"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp">
+
+        <!-- Edit Text for Sets -->
+        <EditText
+            android:id="@+id/setsEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Sets"
+            android:textSize="18sp" />
+
+        <!-- TextView for Sets -->
+        <TextView
+            android:id="@+id/setsTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Sets"/>
+
+        <!-- Edit Text for Reps -->
+        <EditText
+            android:id="@+id/repsEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Reps"
+            android:textSize="16sp"/>
+
+        <!-- TextView for Reps -->
+        <TextView
+            android:id="@+id/repsTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:text="Reps"
+            android:textStyle="bold"/>
+
+        <!-- Edit Text for Weight -->
+        <EditText
+            android:id="@+id/weightEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Kg"
+            android:textSize="16sp"/>
+
+        <!-- TextView for Weight -->
+        <TextView
+            android:id="@+id/weightTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:text="Kg"
+            android:textStyle="bold"/>
+
+        <!-- Delete Button -->
+        <ImageButton
+            android:id="@+id/updateSetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_check_24"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:contentDescription="delete_button_description"/>
+
+        <ImageButton
+            android:id="@+id/deleteSetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_delete_forever_red"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center"
+            android:contentDescription="delete_button_description"/>
+    </LinearLayout>
+</LinearLayout>

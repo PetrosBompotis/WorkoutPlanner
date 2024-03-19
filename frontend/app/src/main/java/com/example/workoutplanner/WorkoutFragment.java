@@ -20,9 +20,11 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -57,6 +59,7 @@ public class WorkoutFragment extends Fragment {
     private RoutinePagerAdapter pagerAdapter;
     private FloatingActionButton floatingActionButtonManageRoutine, floatingActionButtonAddExercise;
     private Button workoutPlanManageButton;
+    private Dialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,7 +148,7 @@ public class WorkoutFragment extends Fragment {
                                 programIdsList.add(id);
                             }
                             if (programNamesList.isEmpty()){
-                                createNewWorkoutPlan();
+                                createNewWorkoutPlan("My workout");
                             }
                             // Populate spinner after getting all program names
                             ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, programNamesList);
@@ -200,13 +203,13 @@ public class WorkoutFragment extends Fragment {
         requestQueue.add(deleteRequest);
     }
 
-    private void createNewWorkoutPlan() {
+    private void createNewWorkoutPlan(String workoutName) {
         Long customerId = userActivity.sharedPreferences.getLong("id", 1);
         String url = "http://10.0.2.2:8080/api/v1/customers/" + customerId + "/workoutPlans";
 
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("programName", "Program DDD");
+            requestBody.put("programName", workoutName);
             requestBody.put("difficulty", "Beginner");
             requestBody.put("gender", "MALE");
         } catch (JSONException e) {
@@ -241,7 +244,7 @@ public class WorkoutFragment extends Fragment {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void updateSelectedWorkoutPlan(Long workoutPlanId) {
+    private void updateSelectedWorkoutPlan(Long workoutPlanId, String workoutName) {
             String url = "http://10.0.2.2:8080/api/v1/workoutPlans/" + workoutPlanId;
             String accessToken = userActivity.sharedPreferences.getString("accessToken", "");
 
@@ -250,7 +253,7 @@ public class WorkoutFragment extends Fragment {
 
             JSONObject requestBody = new JSONObject();
             try {
-                requestBody.put("programName", "newName");
+                requestBody.put("programName", workoutName);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -303,7 +306,7 @@ public class WorkoutFragment extends Fragment {
                                 routineIdsList.add(id);
                             }
                             if (routineNamesList.isEmpty()){
-                                createNewRoutine();
+                                createNewRoutine("My routine");
                             }
                             // Create a new adapter for the ViewPager
                             pagerAdapter = new RoutinePagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -363,13 +366,13 @@ public class WorkoutFragment extends Fragment {
         requestQueue.add(deleteRequest);
     }
 
-    private void createNewRoutine(){
+    private void createNewRoutine(String routineName){
         Long workoutPlanId = getSelectedWorkoutPlanId();
         String url = "http://10.0.2.2:8080/api/v1/workoutPlans/"+workoutPlanId+"/routines";
 
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("routineName", "Routine S");
+            requestBody.put("routineName", routineName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -402,7 +405,7 @@ public class WorkoutFragment extends Fragment {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void updateSelectedRoutine(Long routineId){
+    private void updateSelectedRoutine(Long routineId, String routineName){
         String url = "http://10.0.2.2:8080/api/v1/routines/"+routineId;
         String accessToken = userActivity.sharedPreferences.getString("accessToken", "");
 
@@ -411,7 +414,7 @@ public class WorkoutFragment extends Fragment {
 
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("routineName", "newRoutineName");
+            requestBody.put("routineName", routineName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -465,7 +468,7 @@ public class WorkoutFragment extends Fragment {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                createNewRoutine();
+                showCustomDialog("routine","Create", 0L, 0L);
 
             }
         });
@@ -475,7 +478,7 @@ public class WorkoutFragment extends Fragment {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                updateSelectedRoutine(routineId);
+                showCustomDialog("routine","Update", routineId, 0L);
 
             }
         });
@@ -521,7 +524,7 @@ public class WorkoutFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                createNewWorkoutPlan();
+                showCustomDialog("workout","Create", 0L, 0L);
             }
         });
 
@@ -529,7 +532,7 @@ public class WorkoutFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                updateSelectedWorkoutPlan(workoutPlanId);
+                showCustomDialog("workout","Update", 0L, workoutPlanId);
             }
         });
 
@@ -557,6 +560,54 @@ public class WorkoutFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void showCustomDialog(String item, String action, Long routineId , Long workoutPlanId ){
+        dialog = new Dialog(requireContext());
+        dialog.setContentView(R.layout.custom_dialog_box);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+
+        Button cancelDialogButton = dialog.findViewById(R.id.button_cancel);
+        Button submitDialogButton = dialog.findViewById(R.id.button_submit);
+        TextView customDialogTextView = dialog.findViewById(R.id.customDialogTextView);
+        EditText customDialogEditText = dialog.findViewById(R.id.customDialogEditText);
+
+        customDialogTextView.setText(action + item);
+
+        cancelDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        submitDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (item.equals("routine") && action.equals("Create")) {
+                    createNewRoutine(customDialogEditText.getText().toString());
+                    dialog.dismiss();
+                }
+
+                if (item.equals("routine") && action.equals("Update")) {
+                    updateSelectedRoutine(routineId, customDialogEditText.getText().toString());
+                    dialog.dismiss();
+                }
+
+                if (item.equals("workout") && action.equals("Create")) {
+                    createNewWorkoutPlan(customDialogEditText.getText().toString());
+                    dialog.dismiss();
+                }
+
+                if (item.equals("workout") && action.equals("Update")) {
+                    updateSelectedWorkoutPlan(workoutPlanId, customDialogEditText.getText().toString());
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.show();
     }
 
     private Long getSelectedWorkoutPlanId(){
