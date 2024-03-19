@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,10 +42,10 @@ public class ExerciseDetailActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     SharedPreferences sharedPreferences;
     Button exerciseDoneButton, exerciseDeleteButton, addSetButton;
-    TextView exerciseNameTextView, muscleTextView, setTextView;
+    TextView muscleTextView, setTextView;
     ImageView exerciseGifImageView;
     RecyclerView setRecyclerView;
-    EditText instructionsEditText;
+    EditText instructionsEditText, exerciseNameEditText;
     Long routineId, exerciseId;
     String exerciseName, muscle, equipment, gifUrl, instructions;
     Boolean isNew;
@@ -63,7 +62,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
 
         exerciseDoneButton = findViewById(R.id.exerciseDoneButton);
         exerciseDeleteButton = findViewById(R.id.exerciseDeleteButton);
-        exerciseNameTextView = findViewById(R.id.exerciseNameTextView2);
+        exerciseNameEditText = findViewById(R.id.exerciseNameEditText);
         muscleTextView = findViewById(R.id.muscleTextView2);
         exerciseGifImageView = findViewById(R.id.exerciseGifImageView);
         setTextView = findViewById(R.id.setTextView);
@@ -93,7 +92,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                 exerciseDeleteButton.setVisibility(View.GONE);
             }
 
-            exerciseNameTextView.setText(exerciseId.toString());
+            exerciseNameEditText.setText(exerciseName);
             muscleTextView.setText(muscle);
             Glide.with(this).load(gifUrl).into(exerciseGifImageView);
             instructionsEditText.setText(instructions);
@@ -132,11 +131,11 @@ public class ExerciseDetailActivity extends AppCompatActivity {
 
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("exerciseName", exerciseName);
+            requestBody.put("exerciseName", exerciseNameEditText.getText().toString());
             requestBody.put("muscle", muscle);
             requestBody.put("equipment", equipment);
             requestBody.put("gifUrl", gifUrl);
-            requestBody.put("instructions", instructions);
+            requestBody.put("instructions", instructionsEditText.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -178,7 +177,8 @@ public class ExerciseDetailActivity extends AppCompatActivity {
 
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("exerciseName", "newExerciseName");
+            requestBody.put("exerciseName", exerciseNameEditText.getText().toString());
+            requestBody.put("instructions", instructionsEditText.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -16,15 +16,15 @@
         android:layout_marginBottom="8dp"/>
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/customDialogEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter text here"
-        android:layout_below="@id/textView"
+        android:layout_below="@id/customDialogTextView"
         android:layout_marginBottom="16dp"/>
 
     <LinearLayout
-        android:layout_below="@id/editText"
+        android:layout_below="@id/customDialogEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
