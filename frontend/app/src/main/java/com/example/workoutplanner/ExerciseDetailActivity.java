@@ -90,6 +90,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
 
             if (isNew){
                 exerciseDeleteButton.setVisibility(View.GONE);
+                addSetButton.setVisibility(View.GONE);
             }
 
             exerciseNameEditText.setText(exerciseName);

@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Sets"
+            android:inputType="number"
             android:textSize="18sp" />
 
         <!-- TextView for Sets -->
@@ -42,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Reps"
+            android:inputType="number"
             android:textSize="16sp"/>
 
         <!-- TextView for Reps -->
@@ -61,6 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Kg"
+            android:inputType="numberDecimal"
             android:textSize="16sp"/>
 
         <!-- TextView for Weight -->

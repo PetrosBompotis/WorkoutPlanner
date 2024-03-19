@@ -103,10 +103,14 @@ public class SignInFragment extends Fragment {
                     String refreshToken = response.getString("refreshToken");
                     JSONObject customerDTO = response.getJSONObject("customerDTO");
                     Long id = customerDTO.getLong("id");
+                    String name = customerDTO.getString("name");
+                    String email = customerDTO.getString("email");
+                    String gender = customerDTO.getString("gender");
+                    Integer age = customerDTO.getInt("age");
                     JSONArray rolesArray = customerDTO.getJSONArray("roles");
                     String role = rolesArray.getString(0);
                     mainActivity.saveTokensToSharedPreferences(accessToken, refreshToken);
-                    mainActivity.saveLoginDataToSharedPreferences(id, role);
+                    mainActivity.saveLoginDataToSharedPreferences(id, role, name, email, gender, age);
                     Log.d("SignIn", "failure block2");
                     if (role.equals("ROLE_ADMIN")){
                         Log.d("SignIn", "failure block3");

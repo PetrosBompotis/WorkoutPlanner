@@ -586,23 +586,39 @@ public class WorkoutFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (item.equals("routine") && action.equals("Create")) {
-                    createNewRoutine(customDialogEditText.getText().toString());
-                    dialog.dismiss();
+                    if (customDialogEditText.getText() != null && !customDialogEditText.getText().toString().trim().isEmpty()) {
+                        createNewRoutine(customDialogEditText.getText().toString());
+                        dialog.dismiss();
+                    }else {
+                        dialog.dismiss();
+                    }
                 }
 
                 if (item.equals("routine") && action.equals("Update")) {
-                    updateSelectedRoutine(routineId, customDialogEditText.getText().toString());
-                    dialog.dismiss();
+                    if (customDialogEditText.getText() != null && !customDialogEditText.getText().toString().trim().isEmpty()) {
+                        updateSelectedRoutine(routineId, customDialogEditText.getText().toString());
+                        dialog.dismiss();
+                    }else {
+                        dialog.dismiss();
+                    }
                 }
 
                 if (item.equals("workout") && action.equals("Create")) {
-                    createNewWorkoutPlan(customDialogEditText.getText().toString());
-                    dialog.dismiss();
+                    if (customDialogEditText.getText() != null && !customDialogEditText.getText().toString().trim().isEmpty()) {
+                        createNewWorkoutPlan(customDialogEditText.getText().toString());
+                        dialog.dismiss();
+                    }else {
+                        dialog.dismiss();
+                    }
                 }
 
                 if (item.equals("workout") && action.equals("Update")) {
-                    updateSelectedWorkoutPlan(workoutPlanId, customDialogEditText.getText().toString());
-                    dialog.dismiss();
+                    if (customDialogEditText.getText() != null && !customDialogEditText.getText().toString().trim().isEmpty()) {
+                        updateSelectedWorkoutPlan(workoutPlanId, customDialogEditText.getText().toString());
+                        dialog.dismiss();
+                    }else {
+                        dialog.dismiss();
+                    }
                 }
             }
         });

@@ -112,10 +112,14 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public void saveLoginDataToSharedPreferences(Long id, String role) {
+    public void saveLoginDataToSharedPreferences(Long id, String role, String name, String email, String gender, Integer age) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong("id", id);
         editor.putString("role", role);
+        editor.putString("name", name);
+        editor.putString("email", email);
+        editor.putString("gender", gender);
+        editor.putInt("age", age);
         editor.apply();
     }
 
