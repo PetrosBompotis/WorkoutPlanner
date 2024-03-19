@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -56,7 +57,9 @@ public class WorkoutFragment extends Fragment {
     private ViewPager viewPager;
     private RoutinePagerAdapter pagerAdapter;
     private FloatingActionButton floatingActionButtonManageRoutine, floatingActionButtonAddExercise;
-    private Button workoutPlanManageButton;
+    private Button workoutPlanManageButton, cancelDialogButton, submitDialogButton;
+    private Dialog dialog;
+    private TextView customDialogTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -465,7 +468,7 @@ public class WorkoutFragment extends Fragment {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                createNewRoutine();
+                showCustomDialog("routine","Create", 0L, 0L);
 
             }
         });
@@ -475,7 +478,7 @@ public class WorkoutFragment extends Fragment {
             public void onClick(View v) {
 
                 dialog.dismiss();
-                updateSelectedRoutine(routineId);
+                showCustomDialog("workout","Update", 0L, routineId);
 
             }
         });
@@ -521,7 +524,7 @@ public class WorkoutFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                createNewWorkoutPlan();
+                showCustomDialog("workout","Create", 0L, 0L);
             }
         });
 
@@ -529,7 +532,7 @@ public class WorkoutFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                updateSelectedWorkoutPlan(workoutPlanId);
+                showCustomDialog("workout","Update", 0L, workoutPlanId);
             }
         });
 
@@ -557,6 +560,53 @@ public class WorkoutFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    private void showCustomDialog(String item, String action, Long routineId , Long workoutPlanId ){
+        dialog = new Dialog(requireContext());
+        dialog.setContentView(R.layout.custom_dialog_box);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+
+        cancelDialogButton = dialog.findViewById(R.id.button_cancel);
+        submitDialogButton = dialog.findViewById(R.id.button_submit);
+        customDialogTextView = dialog.findViewById(R.id.customDialogTextView);
+
+        customDialogTextView.setText(action + item);
+
+        cancelDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        submitDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (item.equals("routine") && action.equals("Create")) {
+                    createNewRoutine();
+                    dialog.dismiss();
+                }
+
+                if (item.equals("routine") && action.equals("Update")) {
+                    updateSelectedRoutine(routineId);
+                    dialog.dismiss();
+                }
+
+                if (item.equals("workout") && action.equals("Create")) {
+                    createNewWorkoutPlan();
+                    dialog.dismiss();
+                }
+
+                if (item.equals("workout") && action.equals("Update")) {
+                    updateSelectedWorkoutPlan(workoutPlanId);
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.show();
     }
 
     private Long getSelectedWorkoutPlanId(){

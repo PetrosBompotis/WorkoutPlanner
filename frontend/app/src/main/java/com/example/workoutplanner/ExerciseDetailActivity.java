@@ -361,5 +361,54 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         requestQueue.add(deleteRequest);
     }
 
+    public void updateSet(Long setId){
+        String url = "http://10.0.2.2:8080/api/v1/sets/"+setId;
+        String accessToken = sharedPreferences.getString("accessToken", "");
 
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + accessToken);
+
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("reps", 2);
+            requestBody.put("numberOfSets", 2);
+            requestBody.put("weight", 3.2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("update set success", "set updated");
+                        loadSets();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    try {
+                        String errorResponse = new String(error.networkResponse.data, HttpHeaderParser.parseCharset(error.networkResponse.headers));
+                        JSONObject errorObject = new JSONObject(errorResponse);
+                        if (errorObject.has("message") && errorObject.getString("message").equals("no data changes found")) {
+                            Log.d("update set no data changes", "set not updated");
+                        }
+                    } catch (UnsupportedEncodingException | JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        })  {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                return Response.success(new JSONObject(), HttpHeaderParser.parseCacheHeaders(response));
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                return headers;
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+    }
 }

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SetViewHolder extends RecyclerView.ViewHolder {
     TextView repsTextView, setsTextView, weightTextView;
     EditText repsEditText, setsEditText, weightEditText;
-    ImageButton deleteSetImageButton;
+    ImageButton deleteSetImageButton, updateSetImageButton;
 
     public SetViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -24,11 +24,19 @@ public class SetViewHolder extends RecyclerView.ViewHolder {
         weightEditText = itemView.findViewById(R.id.weightEditText);
 
         deleteSetImageButton = itemView.findViewById(R.id.deleteSetButton);
+        updateSetImageButton = itemView.findViewById(R.id.updateSetButton);
         deleteSetImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String setId = (String) v.getTag();
                 ((ExerciseDetailActivity)itemView.getContext()).deleteSet(Long.parseLong(setId));
+            }
+        });
+        updateSetImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String setId = (String) v.getTag();
+                ((ExerciseDetailActivity)itemView.getContext()).updateSet(Long.parseLong(setId));
             }
         });
     }

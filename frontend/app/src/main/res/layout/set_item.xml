@@ -75,11 +75,21 @@
 
         <!-- Delete Button -->
         <ImageButton
+            android:id="@+id/updateSetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_check_24"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:contentDescription="delete_button_description"/>
+
+        <ImageButton
             android:id="@+id/deleteSetButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_delete_forever_24"
+            android:src="@drawable/baseline_delete_forever_red"
             android:background="@android:color/transparent"
+            android:layout_marginStart="10dp"
             android:layout_gravity="center"
             android:contentDescription="delete_button_description"/>
     </LinearLayout>
