@@ -22,6 +22,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
     private static final String SHARED_PREFS_NAME = "MyPreferences";
     RequestQueue requestQueue;
@@ -52,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 new JsonObjectRequest(Request.Method.POST, url, requestBody, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        String accessToken = "";
-                        String refreshToken = "";
+                        String accessToken;
+                        String refreshToken;
                         try {
                             accessToken = response.getString("accessToken");
                             refreshToken = response.getString("refreshToken");
@@ -61,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
                             throw new RuntimeException(e);
                         }
                         saveTokensToSharedPreferences(accessToken, refreshToken);
-                        showToastLong(MainActivity.this,  "Refresh Token successful!");
+                        Log.d("RefreshToken",  "Success block");
                         Intent intent = new Intent(
                                 MainActivity.this,
-                                sharedPreferences.getString("role", null).equals("ROLE_ADMIN")
+                                Objects.equals(sharedPreferences.getString("role", null), "ROLE_ADMIN")
                                         ? AdminActivity.class
                                         : UserActivity.class);
                         startActivity(intent);
@@ -121,9 +123,5 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("gender", gender);
         editor.putInt("age", age);
         editor.apply();
-    }
-
-    public void showToastLong(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

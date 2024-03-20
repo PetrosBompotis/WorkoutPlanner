@@ -38,9 +38,4 @@ public class SetAdapter extends RecyclerView.Adapter<SetViewHolder> {
     public int getItemCount() {
         return sets.size();
     }
-
-    public void setSets(List<Set> sets) {
-        this.sets = sets;
-        notifyDataSetChanged();
-    }
 }

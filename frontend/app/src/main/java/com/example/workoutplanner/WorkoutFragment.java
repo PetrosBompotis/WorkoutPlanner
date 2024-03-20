@@ -85,6 +85,11 @@ public class WorkoutFragment extends Fragment {
 
         loadWorkoutPlans();
 
+        setupListeners();
+        return view;
+    }
+
+    private void setupListeners() {
         floatingActionButtonManageRoutine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,11 +127,10 @@ public class WorkoutFragment extends Fragment {
                 // Do nothing
             }
         });
-        return view;
     }
 
     private void loadWorkoutPlans(){
-        Long id = userActivity.sharedPreferences.getLong("id", 1);
+        long id = userActivity.sharedPreferences.getLong("id", 1);
         String url = "http://10.0.2.2:8080/api/v1/customers/"+id+"/workoutPlans";
         String accessToken = userActivity.sharedPreferences.getString("accessToken", "");
 
@@ -204,7 +208,7 @@ public class WorkoutFragment extends Fragment {
     }
 
     private void createNewWorkoutPlan(String workoutName) {
-        Long customerId = userActivity.sharedPreferences.getLong("id", 1);
+        long customerId = userActivity.sharedPreferences.getLong("id", 1);
         String url = "http://10.0.2.2:8080/api/v1/customers/" + customerId + "/workoutPlans";
 
         JSONObject requestBody = new JSONObject();

@@ -27,8 +27,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Map;
-
 public class SignUpFragment extends Fragment {
     private RequestQueue requestQueue;
     private EditText usernameEditText, emailEditText, passwordEditText;
@@ -143,7 +141,7 @@ public class SignUpFragment extends Fragment {
         }){
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                Log.d("Signup", "User profile created!2");
+                Log.d("Signup", "Success block");
                 return Response.success(new JSONObject(), HttpHeaderParser.parseCacheHeaders(response));
             }
         };

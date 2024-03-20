@@ -111,9 +111,8 @@ public class SignInFragment extends Fragment {
                     String role = rolesArray.getString(0);
                     mainActivity.saveTokensToSharedPreferences(accessToken, refreshToken);
                     mainActivity.saveLoginDataToSharedPreferences(id, role, name, email, gender, age);
-                    Log.d("SignIn", "failure block2");
+                    Log.d("SignIn", "Success block");
                     if (role.equals("ROLE_ADMIN")){
-                        Log.d("SignIn", "failure block3");
                         mainActivity.redirectToAdminActivity();
                     }else {
                         mainActivity.redirectToUserActivity();
