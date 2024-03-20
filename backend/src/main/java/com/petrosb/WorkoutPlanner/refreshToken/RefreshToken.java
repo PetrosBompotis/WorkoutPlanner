@@ -2,6 +2,8 @@ package com.petrosb.WorkoutPlanner.refreshToken;
 
 import com.petrosb.WorkoutPlanner.customer.Customer;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
 
@@ -24,6 +26,7 @@ public class RefreshToken {
 
     @OneToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
 
     @Column(nullable = false, unique = true)
