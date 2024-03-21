@@ -10,7 +10,7 @@
         android:id="@+id/community"
         android:title="Community"/>
     <item
-        android:icon="@drawable/baseline_email_24"
+        android:icon="@drawable/baseline_bar_chart_24"
         android:id="@+id/measurements"
         android:title="Measurements"/>
     <item

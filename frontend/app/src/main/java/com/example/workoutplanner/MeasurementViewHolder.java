@@ -6,6 +6,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MeasurementViewHolder extends RecyclerView.ViewHolder{
@@ -26,7 +28,6 @@ public class MeasurementViewHolder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View v) {
                 Long measurementId = (Long) v.getTag();
-                //((UserActivity) itemView.getContext()).deleteMeasurement(measurementId);
                 Log.d("ssss",measurementId.toString());
             }
         });

@@ -33,13 +33,11 @@ public class RoutineFragment extends Fragment {
 
     private Long routineId;
     private RecyclerView recyclerView;
-    private TextView textViewRoutineId;
     private ExerciseAdapter adapter;
     private RequestQueue requestQueue;
     private UserActivity userActivity;
     private List<Exercise> exerciseList;
 
-    // Constructor to receive routineId
     public RoutineFragment(Long routineId) {
         this.routineId = routineId;
     }
@@ -57,8 +55,6 @@ public class RoutineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routine, container, false);
-        textViewRoutineId = view.findViewById(R.id.textViewRoutineId);
-        textViewRoutineId.setText("Routine ID: " + routineId);
         recyclerView = view.findViewById(R.id.exerciseRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         loadExercises(routineId);
