@@ -37,4 +37,8 @@ public class WorkoutPlanDataAccessService {
     public void updateWorkoutPlanById(WorkoutPlan workoutPlan) {
         workoutPlanRepository.save(workoutPlan);
     }
+
+    public WorkoutPlan insertWorkoutPlanAndReturnIt(WorkoutPlan workoutPlan){
+        return workoutPlanRepository.save(workoutPlan);
+    }
 }
