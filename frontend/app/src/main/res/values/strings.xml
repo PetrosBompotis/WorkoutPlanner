@@ -67,4 +67,15 @@
         <item>shoulders</item>
         <item>triceps</item>
     </string-array>
+    <string-array name="difficulty_array">
+        <item>any</item>
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+    </string-array>
+    <string-array name="gender_array">
+        <item>any</item>
+        <item>MALE</item>
+        <item>FEMALE</item>
+    </string-array>
 </resources>

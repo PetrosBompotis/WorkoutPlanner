@@ -19,13 +19,14 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
 
     private List<Exercise> exercises;
     private Long routineId;
-
+    private Boolean isClickable;
     private Boolean isNew;
 
-    public ExerciseAdapter(List<Exercise> exercises, Long routineId, Boolean isNew) {
+    public ExerciseAdapter(List<Exercise> exercises, Long routineId, Boolean isNew, Boolean isClickable) {
         this.exercises = exercises;
         this.routineId = routineId;
         this.isNew = isNew;
+        this.isClickable = isClickable;
     }
 
     @NonNull
@@ -71,19 +72,20 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         public void onClick(View v) {
             // Get the clicked exercise
             Exercise exercise = exercises.get(getAdapterPosition());
-
-            // Redirect to ExerciseDetailActivity with exercise data
-            Context context = itemView.getContext();
-            Intent intent = new Intent(context, ExerciseDetailActivity.class);
-            intent.putExtra("exerciseId", exercise.getExerciseId());
-            intent.putExtra("exerciseName", exercise.getExerciseName());
-            intent.putExtra("muscle", exercise.getMuscle());
-            intent.putExtra("equipment", exercise.getEquipment());
-            intent.putExtra("gifUrl", exercise.getGifUrl());
-            intent.putExtra("instructions", exercise.getInstructions());
-            intent.putExtra("routineId", routineId);
-            intent.putExtra("isNew", isNew);
-            context.startActivity(intent);
+            if (isClickable){
+                // Redirect to ExerciseDetailActivity with exercise data
+                Context context = itemView.getContext();
+                Intent intent = new Intent(context, ExerciseDetailActivity.class);
+                intent.putExtra("exerciseId", exercise.getExerciseId());
+                intent.putExtra("exerciseName", exercise.getExerciseName());
+                intent.putExtra("muscle", exercise.getMuscle());
+                intent.putExtra("equipment", exercise.getEquipment());
+                intent.putExtra("gifUrl", exercise.getGifUrl());
+                intent.putExtra("instructions", exercise.getInstructions());
+                intent.putExtra("routineId", routineId);
+                intent.putExtra("isNew", isNew);
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -91,6 +93,5 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         exercises = filteredExercises;
         notifyDataSetChanged();
     }
-
 }
 

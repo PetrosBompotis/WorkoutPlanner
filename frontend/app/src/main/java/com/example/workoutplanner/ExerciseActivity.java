@@ -145,7 +145,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
                                 exerciseList.add(new Exercise(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
-                            adapter = new ExerciseAdapter(exerciseList, routineId, true);
+                            adapter = new ExerciseAdapter(exerciseList, routineId, true, true);
                             recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();

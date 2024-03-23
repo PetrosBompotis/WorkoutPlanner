@@ -8,17 +8,11 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
-public class RoutinePagerAdapter extends FragmentStatePagerAdapter {
+public class RoutinePagerAdapterPost extends FragmentStatePagerAdapter {
     private ArrayList<Long> routineIdsList;
     private ArrayList<String> routineNamesList;
 
-    public RoutinePagerAdapter(@NonNull FragmentManager fm, int behavior) {
-        super(fm, behavior);
-        routineIdsList = new ArrayList<>();
-        routineNamesList = new ArrayList<>();
-    }
-
-    public RoutinePagerAdapter(@NonNull FragmentManager fm) {
+    public RoutinePagerAdapterPost(@NonNull FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         routineIdsList = new ArrayList<>();
         routineNamesList = new ArrayList<>();
@@ -29,7 +23,7 @@ public class RoutinePagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         // Create a new fragment for each routine
         Long routineId = routineIdsList.get(position);
-        return new RoutineFragment(routineId);
+        return new RoutineFragmentPost(routineId);
     }
 
     @Override

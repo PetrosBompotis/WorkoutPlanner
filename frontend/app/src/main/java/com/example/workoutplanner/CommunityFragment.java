@@ -2,63 +2,177 @@ package com.example.workoutplanner;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CommunityFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class CommunityFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public CommunityFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CommunityFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CommunityFragment newInstance(String param1, String param2) {
-        CommunityFragment fragment = new CommunityFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private UserActivity userActivity;
+    private RequestQueue requestQueue;
+    private RecyclerView recyclerViewPosts;
+    private List<PostResponse> postList;
+    private PostAdapter adapter;
+    private SearchView searchViewPost;
+    private Spinner difficultySpinner;
+    private Spinner genderSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        userActivity = (UserActivity) getActivity();
+        requestQueue = Volley.newRequestQueue(requireContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_community, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_community, container, false);
+        difficultySpinner = view.findViewById(R.id.difficultySpinner);
+        genderSpinner = view.findViewById(R.id.genderSpinner);
+        recyclerViewPosts = view.findViewById(R.id.recyclerViewPosts);
+        recyclerViewPosts.setLayoutManager(new LinearLayoutManager(requireContext()));
+        searchViewPost = view.findViewById(R.id.searchPost);
+        searchViewPost.clearFocus();
+
+        instantiateSpinners();
+        setupListeners();
+        loadPosts();
+
+        return view;
+    }
+
+    private void instantiateSpinners() {
+        ArrayAdapter<CharSequence> difficultyAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.difficulty_array, android.R.layout.simple_spinner_item);
+        difficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        difficultySpinner.setAdapter(difficultyAdapter);
+
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.gender_array, android.R.layout.simple_spinner_item);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(genderAdapter);
+    }
+
+    private void setupListeners() {
+        searchViewPost.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                handleFiltering(newText);
+                return true;
+            }
+
+        });
+
+        difficultySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                handleFiltering(searchViewPost.getQuery().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                handleFiltering(searchViewPost.getQuery().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+    }
+
+    private void loadPosts(){
+        postList = new ArrayList<>();
+        String url = "http://10.0.2.2:8080/api/v1/posts";
+        String accessToken = userActivity.sharedPreferences.getString("accessToken", "");
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + accessToken);
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject postJson = response.getJSONObject(i);
+                                Long postId = postJson.getLong("id");
+                                String postName = postJson.getString("postName");
+                                String createdBy = postJson.getString("createdBy");
+
+                                JSONObject workoutPlanJson = postJson.getJSONObject("workoutPlan");
+                                Long workoutPlanId = workoutPlanJson.getLong("id");
+                                String difficulty = workoutPlanJson.getString("difficulty");
+                                String gender = workoutPlanJson.getString("gender");
+
+                                postList.add(new PostResponse(postId, postName, createdBy, difficulty, gender, workoutPlanId));
+                            }
+                            adapter = new PostAdapter(postList);
+                            recyclerViewPosts.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("post error", "post error");
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return headers;
+            }
+        };
+
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    private void handleFiltering(String query) {
+        List<PostResponse> filteredPosts = new ArrayList<>();
+        for (PostResponse post : postList) {
+            if ((post.getPostName().toLowerCase().contains(query.toLowerCase()) || query.isEmpty()) &&
+                    (difficultySpinner.getSelectedItem().toString().equalsIgnoreCase("any") || post.getDifficulty().equalsIgnoreCase(difficultySpinner.getSelectedItem().toString())) &&
+                    (genderSpinner.getSelectedItem().toString().equalsIgnoreCase("any") || post.getGender().equalsIgnoreCase(genderSpinner.getSelectedItem().toString()))) {
+                filteredPosts.add(post);
+            }
+        }
+        adapter.filterList(filteredPosts);
     }
 }
