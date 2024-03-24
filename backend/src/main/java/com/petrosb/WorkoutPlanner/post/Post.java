@@ -34,6 +34,10 @@ public class Post {
             nullable = false
     )
     private String createdBy;
+    @Column(
+            nullable = false
+    )
+    private Integer downloadCounter;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -47,11 +51,12 @@ public class Post {
     public Post() {
     }
 
-    public Post(String postName, String createdBy, Customer customer, WorkoutPlan workoutPlan) {
+    public Post(String postName, String createdBy, Customer customer, WorkoutPlan workoutPlan, Integer downloadCounter) {
         this.postName = postName;
         this.createdBy = createdBy;
         this.customer = customer;
         this.workoutPlan = workoutPlan;
+        this.downloadCounter = downloadCounter;
     }
 
     public Long getId() {
@@ -94,12 +99,21 @@ public class Post {
         this.createdBy = createdBy;
     }
 
+    public Integer getDownloadCounter() {
+        return downloadCounter;
+    }
+
+    public void setDownloadCounter(Integer downloadCounter) {
+        this.downloadCounter = downloadCounter;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
                 "id=" + id +
                 ", postName='" + postName + '\'' +
                 ", createdBy='" + createdBy + '\'' +
+                ", downloadCounter=" + downloadCounter +
                 ", customer=" + customer +
                 ", workoutPlan=" + workoutPlan +
                 '}';
@@ -110,11 +124,11 @@ public class Post {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(id, post.id) && Objects.equals(postName, post.postName) && Objects.equals(createdBy, post.createdBy) && Objects.equals(customer, post.customer) && Objects.equals(workoutPlan, post.workoutPlan);
+        return Objects.equals(id, post.id) && Objects.equals(postName, post.postName) && Objects.equals(createdBy, post.createdBy) && Objects.equals(downloadCounter, post.downloadCounter) && Objects.equals(customer, post.customer) && Objects.equals(workoutPlan, post.workoutPlan);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, postName, createdBy, customer, workoutPlan);
+        return Objects.hash(id, postName, createdBy, downloadCounter, customer, workoutPlan);
     }
 }

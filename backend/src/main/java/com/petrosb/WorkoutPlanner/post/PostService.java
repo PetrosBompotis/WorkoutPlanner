@@ -6,7 +6,6 @@ import com.petrosb.WorkoutPlanner.exception.RequestValidationException;
 import com.petrosb.WorkoutPlanner.exception.ResourceNotFoundException;
 import com.petrosb.WorkoutPlanner.workoutPlan.WorkoutPlan;
 import com.petrosb.WorkoutPlanner.workoutPlan.WorkoutPlanDataAccessService;
-import com.petrosb.WorkoutPlanner.workoutPlan.WorkoutPlanUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,8 +49,8 @@ public class PostService {
                 postCreationRequest.postName(),
                 postCreationRequest.createdBy(),
                 customer,
-                workoutPlan
-        );
+                workoutPlan,
+                0);
 
         postDataAccessService.insertPost(post);
     }
@@ -76,6 +75,11 @@ public class PostService {
         //check if attributes need change exists
         if (updateRequest.postName() != null && !updateRequest.postName().equals(post.getPostName())){
             post.setPostName(updateRequest.postName());
+            changes = true;
+        }
+
+        if (updateRequest.downloadCounter() != null && !updateRequest.downloadCounter().equals(post.getDownloadCounter())){
+            post.setDownloadCounter(updateRequest.downloadCounter());
             changes = true;
         }
 

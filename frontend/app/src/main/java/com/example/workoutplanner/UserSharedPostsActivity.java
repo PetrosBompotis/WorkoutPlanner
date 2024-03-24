@@ -75,13 +75,14 @@ public class UserSharedPostsActivity extends AppCompatActivity {
                                 Long postId = postJson.getLong("id");
                                 String postName = postJson.getString("postName");
                                 String createdBy = postJson.getString("createdBy");
+                                Integer downloadCounter = postJson.getInt("downloadCounter");
 
                                 JSONObject workoutPlanJson = postJson.getJSONObject("workoutPlan");
                                 Long workoutPlanId = workoutPlanJson.getLong("id");
                                 String difficulty = workoutPlanJson.getString("difficulty");
                                 String gender = workoutPlanJson.getString("gender");
 
-                                postList.add(new PostResponse(postId, postName, createdBy, difficulty, gender, workoutPlanId));
+                                postList.add(new PostResponse(postId, postName, createdBy, difficulty, gender, workoutPlanId, downloadCounter));
                             }
                             adapter = new PostAdapter(postList, true);
                             recyclerViewMyPosts.setAdapter(adapter);

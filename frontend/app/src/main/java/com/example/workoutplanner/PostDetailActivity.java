@@ -1,6 +1,5 @@
 package com.example.workoutplanner;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.NetworkResponse;
@@ -33,7 +27,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
@@ -55,6 +48,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private RoutinePagerAdapterPost pagerAdapter;
     Long postId, workoutPlanId;
     String postName, createdBy, difficulty, gender;
+    private Integer downloadCounter;
     private Boolean isEditable;
     private ImageButton downloadButton, deletePostButton, editPostButton;
     private Dialog dialog;
@@ -91,6 +85,7 @@ public class PostDetailActivity extends AppCompatActivity {
             difficulty = extras.getString("difficulty");
             gender = extras.getString("gender");
             workoutPlanId = extras.getLong("workoutPlanId");
+            downloadCounter = extras.getInt("downloadCounter");
             isEditable = extras.getBoolean("isEditable");
         }
 
@@ -110,6 +105,7 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 downloadPost();
+                updatePostDownloadCounter();
             }
         });
         deletePostButton.setOnClickListener(new View.OnClickListener() {
@@ -269,7 +265,7 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (customDialogEditText.getText() != null && !customDialogEditText.getText().toString().trim().isEmpty()) {
-                    updatePost(customDialogEditText.getText().toString());
+                    updatePostName(customDialogEditText.getText().toString());
                     dialog.dismiss();
                 }else{
                     dialog.dismiss();
@@ -280,7 +276,7 @@ public class PostDetailActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void updatePost(String postName){
+    private void updatePostName(String postName){
         String url = "http://10.0.2.2:8080/api/v1/posts/"+postId;
         String accessToken = sharedPreferences.getString("accessToken", "");
 
@@ -290,6 +286,48 @@ public class PostDetailActivity extends AppCompatActivity {
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.put("postName", postName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        showToastLong(PostDetailActivity.this, "Post updated successfully");
+                        Intent intent = new Intent(PostDetailActivity.this, UserSharedPostsActivity.class);
+                        startActivity(intent);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showToastLong(PostDetailActivity.this, "Error updating post: " + error.getMessage());
+            }
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                return Response.success(new JSONObject(), HttpHeaderParser.parseCacheHeaders(response));
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                return headers;
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void updatePostDownloadCounter(){
+        String url = "http://10.0.2.2:8080/api/v1/posts/"+postId;
+        String accessToken = sharedPreferences.getString("accessToken", "");
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + accessToken);
+
+        Integer downloadCounterValue = downloadCounter + 1;
+
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("downloadCounter", downloadCounterValue);
         } catch (JSONException e) {
             e.printStackTrace();
         }

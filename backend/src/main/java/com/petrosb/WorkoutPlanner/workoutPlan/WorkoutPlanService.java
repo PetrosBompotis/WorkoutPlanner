@@ -97,7 +97,7 @@ public class WorkoutPlanService {
         workoutPlanDataAccessService.updateWorkoutPlanById(workoutPlan);
     }
 
-    public void duplicateWorkoutPlan(Long customerId, Long workoutPlanId) {
+    public WorkoutPlan duplicateWorkoutPlan(Long customerId, Long workoutPlanId) {
         Customer customer = customerDataAccessService.selectCustomerByID(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Customer with id [%s] not found".formatted(customerId)
@@ -136,5 +136,7 @@ public class WorkoutPlanService {
                 exerciseDataAccessService.insertExercise(newExercise);
             }
         }
+
+        return newProgram;
     }
 }

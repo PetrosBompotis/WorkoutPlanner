@@ -36,6 +36,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.createdByTextView.setText(post.getCreatedBy());
         holder.difficultyTextView.setText(post.getDifficulty());
         holder.genderTextView.setText(post.getGender());
+        holder.downloadValueTextView.setText(String.valueOf(post.getDownloadCounter()));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView postNameTextView, createdByTextView, difficultyTextView, genderTextView;
+        TextView postNameTextView, createdByTextView, difficultyTextView, genderTextView, downloadValueTextView;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -52,6 +53,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             createdByTextView = itemView.findViewById(R.id.createdByTextView);
             difficultyTextView = itemView.findViewById(R.id.difficultyValueTextView);
             genderTextView = itemView.findViewById(R.id.genderValueTextView);
+            downloadValueTextView = itemView.findViewById(R.id.downloadValueTextView);
 
             // Set click listener for the item
             itemView.setOnClickListener(this);
@@ -71,6 +73,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             intent.putExtra("difficulty", post.getDifficulty());
             intent.putExtra("gender", post.getGender());
             intent.putExtra("workoutPlanId", post.getWorkoutPlanId());
+            intent.putExtra("downloadCounter", post.getDownloadCounter());
             intent.putExtra("isEditable", isEditable);
             context.startActivity(intent);
         }

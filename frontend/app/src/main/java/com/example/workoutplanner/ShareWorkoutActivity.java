@@ -35,7 +35,7 @@ public class ShareWorkoutActivity extends AppCompatActivity {
     private EditText postNameEditText;
     private Spinner genderSpinner;
     private Spinner difficultySpinner;
-    private Long workoutPlanId;
+    private Long workoutPlanId, duplicatedWorkoutPlanId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,12 +134,58 @@ public class ShareWorkoutActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showToastLong(ShareWorkoutActivity.this, "Workout plan duplicated successfully");
+                        try {
+                            duplicatedWorkoutPlanId = response.getLong("id");
+                            showToastLong(ShareWorkoutActivity.this, "Workout id: " + duplicatedWorkoutPlanId);
+                            createPost(duplicatedWorkoutPlanId);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //showToastLong(ShareWorkoutActivity.this, "Workout plan duplicated successfully");
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 showToastLong(ShareWorkoutActivity.this, "Error duplicating workout plan: " + error.getMessage());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + sharedPreferences.getString("accessToken", ""));
+                return headers;
+            }
+        };
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void createPost(Long duplicatedWorkoutPlanId){
+        long customerId = sharedPreferences.getLong("id", 1);
+        String name = sharedPreferences.getString("name", "name");
+        String url = "http://10.0.2.2:8080/api/v1/customers/" + customerId + "/workoutPlans/" + duplicatedWorkoutPlanId + "/posts";
+
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("postName", postNameEditText.getText().toString());
+            requestBody.put("createdBy", name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        showToastLong(ShareWorkoutActivity.this, "Post created successfully");
+                        Intent intent = new Intent(ShareWorkoutActivity.this, UserActivity.class);
+                        startActivity(intent);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showToastLong(ShareWorkoutActivity.this, "Error creating post: " + error.getMessage());
             }
         }) {
             @Override
@@ -155,10 +201,6 @@ public class ShareWorkoutActivity extends AppCompatActivity {
         };
 
         requestQueue.add(jsonObjectRequest);
-    }
-
-    public void createPost(){
-
     }
 
     public void showToastLong(Context context, String message) {
