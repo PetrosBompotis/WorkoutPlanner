@@ -16,6 +16,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ShareWorkoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserSharedPostsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PostDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ExerciseDetailActivity"
             android:exported="false" />
         <activity

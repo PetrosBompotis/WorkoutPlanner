@@ -36,4 +36,8 @@ public class RoutineDataAccessService {
     public void updateRoutineById(Routine routine) {
         routineRepository.save(routine);
     }
+
+    public Routine insertRoutineAndReturnIt(Routine routine) {
+        return routineRepository.save(routine);
+    }
 }

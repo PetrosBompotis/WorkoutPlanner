@@ -4,7 +4,14 @@ import com.petrosb.WorkoutPlanner.customer.Customer;
 import com.petrosb.WorkoutPlanner.customer.CustomerDataAccessService;
 import com.petrosb.WorkoutPlanner.exception.RequestValidationException;
 import com.petrosb.WorkoutPlanner.exception.ResourceNotFoundException;
+import com.petrosb.WorkoutPlanner.exercise.Exercise;
+import com.petrosb.WorkoutPlanner.exercise.ExerciseDataAccessService;
+import com.petrosb.WorkoutPlanner.exercise.ExerciseService;
+import com.petrosb.WorkoutPlanner.routine.Routine;
+import com.petrosb.WorkoutPlanner.routine.RoutineDataAccessService;
+import com.petrosb.WorkoutPlanner.routine.RoutineService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -12,10 +19,18 @@ import java.util.List;
 public class WorkoutPlanService {
     private final WorkoutPlanDataAccessService workoutPlanDataAccessService;
     private final CustomerDataAccessService customerDataAccessService;
+    private final RoutineService routineService;
+    private final ExerciseService exerciseService;
+    private final RoutineDataAccessService routineDataAccessService;
+    private final ExerciseDataAccessService exerciseDataAccessService;
 
-    public WorkoutPlanService(WorkoutPlanDataAccessService workoutPlanDataAccessService, CustomerDataAccessService customerDataAccessService) {
+    public WorkoutPlanService(WorkoutPlanDataAccessService workoutPlanDataAccessService, CustomerDataAccessService customerDataAccessService, RoutineService routineService, ExerciseService exerciseService, RoutineDataAccessService routineDataAccessService, ExerciseDataAccessService exerciseDataAccessService) {
         this.workoutPlanDataAccessService = workoutPlanDataAccessService;
         this.customerDataAccessService = customerDataAccessService;
+        this.routineService = routineService;
+        this.exerciseService = exerciseService;
+        this.routineDataAccessService = routineDataAccessService;
+        this.exerciseDataAccessService = exerciseDataAccessService;
     }
 
     public List<WorkoutPlan> getAllWorkoutPlansByCustomerId(Long customerId){
@@ -80,5 +95,48 @@ public class WorkoutPlanService {
         }
 
         workoutPlanDataAccessService.updateWorkoutPlanById(workoutPlan);
+    }
+
+    public WorkoutPlan duplicateWorkoutPlan(Long customerId, Long workoutPlanId) {
+        Customer customer = customerDataAccessService.selectCustomerByID(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Customer with id [%s] not found".formatted(customerId)
+                ));
+
+        WorkoutPlan existingProgram = workoutPlanDataAccessService.selectWorkoutPlanByID(workoutPlanId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Workout plan with id [%s] not found".formatted(workoutPlanId)
+                ));
+
+        // Create a new fitness program with the same details
+        WorkoutPlan newProgram = new WorkoutPlan(
+            existingProgram.getProgramName(),
+            existingProgram.getDifficulty(),
+            existingProgram.getGender(),
+            customer
+        );
+
+        newProgram = workoutPlanDataAccessService.insertWorkoutPlanAndReturnIt(newProgram);
+        for (Routine existingRoutine : routineService.getAllRoutinesByWorkoutPlanId(existingProgram.getId())) {
+            Routine newRoutine = new Routine(
+                existingRoutine.getRoutineName(),
+                newProgram
+            );
+            newRoutine = routineDataAccessService.insertRoutineAndReturnIt(newRoutine);
+
+            for (Exercise existingExercise : exerciseService.getAllExercisesByRoutineId(existingRoutine.getId())) {
+                Exercise newExercise = new Exercise(
+                    existingExercise.getExerciseName(),
+                    existingExercise.getMuscle() ,
+                    existingExercise.getEquipment(),
+                    existingExercise.getGifUrl(),
+                    existingExercise.getInstructions(),
+                    newRoutine
+                );
+                exerciseDataAccessService.insertExercise(newExercise);
+            }
+        }
+
+        return newProgram;
     }
 }

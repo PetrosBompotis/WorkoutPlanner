@@ -35,4 +35,9 @@ public class WorkoutPlanController {
                                   @PathVariable("workoutPlanId") Long workoutPlanId) {
         workoutPlanService.updateWorkoutPlan(updateRequest, workoutPlanId);
     }
+
+    @PostMapping("/customers/{customerId}/workoutPlans/{workoutPlanId}")
+    public WorkoutPlan duplicateWorkoutPlan(@PathVariable Long workoutPlanId, @PathVariable Long customerId) {
+        return workoutPlanService.duplicateWorkoutPlan(customerId, workoutPlanId);
+    }
 }

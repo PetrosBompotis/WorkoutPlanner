@@ -3,16 +3,14 @@ package com.example.workoutplanner;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RoutineFragment extends Fragment {
+public class RoutineFragmentPost extends Fragment {
 
     private Long routineId;
     private RecyclerView recyclerView;
@@ -40,7 +38,7 @@ public class RoutineFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private List<Exercise> exerciseList;
 
-    public RoutineFragment(Long routineId) {
+    public RoutineFragmentPost(Long routineId) {
         this.routineId = routineId;
     }
 
@@ -87,7 +85,7 @@ public class RoutineFragment extends Fragment {
 
                                 exerciseList.add(new Exercise(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
-                            adapter = new ExerciseAdapter(exerciseList, routineId, false, true);
+                            adapter = new ExerciseAdapter(exerciseList, routineId, false, false);
                             recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
