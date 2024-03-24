@@ -522,6 +522,7 @@ public class WorkoutFragment extends Fragment {
         LinearLayout layoutCreateWorkout = dialog.findViewById(R.id.layoutCreateWorkout);
         LinearLayout layoutRenameWorkout = dialog.findViewById(R.id.layoutRenameWorkout);
         LinearLayout layoutDeleteWorkout = dialog.findViewById(R.id.layoutDeleteWorkout);
+        LinearLayout layoutShareWorkout = dialog.findViewById(R.id.layoutShareWorkout);
         ImageView cancelButton = dialog.findViewById(R.id.cancelWorkoutButton);
 
         layoutCreateWorkout.setOnClickListener(new View.OnClickListener() {
@@ -549,6 +550,15 @@ public class WorkoutFragment extends Fragment {
                 } else {
                     showToastLong(requireContext(), "You need to have at least one workout plan.");
                 }
+            }
+        });
+
+        layoutShareWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), ShareWorkoutActivity.class);
+                intent.putExtra("workoutPlanId", getSelectedWorkoutPlanId());
+                startActivity(intent);
             }
         });
 

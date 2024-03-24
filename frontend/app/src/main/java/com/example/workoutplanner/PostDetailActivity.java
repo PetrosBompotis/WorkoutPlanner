@@ -268,8 +268,12 @@ public class PostDetailActivity extends AppCompatActivity {
         submitDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updatePost(customDialogEditText.getText().toString());
-                dialog.dismiss();
+                if (customDialogEditText.getText() != null && !customDialogEditText.getText().toString().trim().isEmpty()) {
+                    updatePost(customDialogEditText.getText().toString());
+                    dialog.dismiss();
+                }else{
+                    dialog.dismiss();
+                }
             }
         });
 
