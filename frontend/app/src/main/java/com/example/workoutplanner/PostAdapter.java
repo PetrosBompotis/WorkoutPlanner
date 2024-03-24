@@ -15,9 +15,11 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
     private List<PostResponse> posts;
+    private Boolean isEditable;
 
-    public PostAdapter(List<PostResponse> posts) {
+    public PostAdapter(List<PostResponse> posts, Boolean isEditable) {
         this.posts = posts;
+        this.isEditable = isEditable;
     }
 
     @NonNull
@@ -69,6 +71,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             intent.putExtra("difficulty", post.getDifficulty());
             intent.putExtra("gender", post.getGender());
             intent.putExtra("workoutPlanId", post.getWorkoutPlanId());
+            intent.putExtra("isEditable", isEditable);
             context.startActivity(intent);
         }
     }

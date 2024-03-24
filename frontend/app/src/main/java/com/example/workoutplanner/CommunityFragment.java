@@ -1,5 +1,6 @@
 package com.example.workoutplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import com.android.volley.Request;
@@ -40,6 +42,7 @@ public class CommunityFragment extends Fragment {
     private SearchView searchViewPost;
     private Spinner difficultySpinner;
     private Spinner genderSpinner;
+    private Button mySharedWorkoutsButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class CommunityFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_community, container, false);
+        mySharedWorkoutsButton = view.findViewById(R.id.mySharedWorkoutsButton);
         difficultySpinner = view.findViewById(R.id.difficultySpinner);
         genderSpinner = view.findViewById(R.id.genderSpinner);
         recyclerViewPosts = view.findViewById(R.id.recyclerViewPosts);
@@ -115,6 +119,14 @@ public class CommunityFragment extends Fragment {
                 // Do nothing
             }
         });
+
+        mySharedWorkoutsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireContext(), UserSharedPostsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadPosts(){
@@ -143,7 +155,7 @@ public class CommunityFragment extends Fragment {
 
                                 postList.add(new PostResponse(postId, postName, createdBy, difficulty, gender, workoutPlanId));
                             }
-                            adapter = new PostAdapter(postList);
+                            adapter = new PostAdapter(postList, false);
                             recyclerViewPosts.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
