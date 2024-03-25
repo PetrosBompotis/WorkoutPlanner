@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.postDetailActivity;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -27,6 +27,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.R;
+import com.example.workoutplanner.UserSharedPostsActivity;
+import com.example.workoutplanner.userActivity.UserActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;

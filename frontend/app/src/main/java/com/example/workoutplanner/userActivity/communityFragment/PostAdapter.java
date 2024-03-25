@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity.communityFragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.workoutplanner.postDetailActivity.PostDetailActivity;
+import com.example.workoutplanner.R;
 
 import java.util.List;
 

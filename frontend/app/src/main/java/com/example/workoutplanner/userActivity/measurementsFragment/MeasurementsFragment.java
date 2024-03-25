@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity.measurementsFragment;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -24,6 +24,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.R;
+import com.example.workoutplanner.userActivity.UserActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

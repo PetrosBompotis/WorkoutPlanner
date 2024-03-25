@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity.measurementsFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.workoutplanner.R;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

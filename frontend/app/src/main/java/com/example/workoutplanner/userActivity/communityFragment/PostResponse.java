@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity.communityFragment;
 
 public class PostResponse {
     private Long postId;

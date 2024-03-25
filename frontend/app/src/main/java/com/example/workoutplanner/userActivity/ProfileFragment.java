@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +18,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.R;
+import com.example.workoutplanner.mainActivity.MainActivity;
+import com.example.workoutplanner.userActivity.UserActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.HashMap;

@@ -22,22 +22,22 @@
             android:name=".UserSharedPostsActivity"
             android:exported="false" />
         <activity
-            android:name=".PostDetailActivity"
+            android:name=".postDetailActivity.PostDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ExerciseDetailActivity"
+            android:name=".exerciseDetailActivity.ExerciseDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ExerciseActivity"
+            android:name=".exerciseActivity.ExerciseActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminActivity"
+            android:name=".adminActivity.AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivity"
+            android:name=".userActivity.UserActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".mainActivity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

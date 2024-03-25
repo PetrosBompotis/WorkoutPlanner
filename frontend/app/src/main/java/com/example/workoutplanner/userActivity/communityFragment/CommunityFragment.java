@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity.communityFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +23,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.R;
+import com.example.workoutplanner.UserSharedPostsActivity;
+import com.example.workoutplanner.userActivity.UserActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

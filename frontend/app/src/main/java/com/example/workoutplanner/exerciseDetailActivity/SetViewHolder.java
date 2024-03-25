@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.exerciseDetailActivity;
 
 import android.view.View;
 import android.widget.EditText;
@@ -6,6 +6,8 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.workoutplanner.R;
 
 public class SetViewHolder extends RecyclerView.ViewHolder {
     EditText repsEditText, setsEditText, weightEditText;

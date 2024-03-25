@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.postDetailActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

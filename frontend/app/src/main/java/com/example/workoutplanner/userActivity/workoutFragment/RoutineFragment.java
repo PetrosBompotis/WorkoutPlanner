@@ -1,16 +1,17 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity.workoutFragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,6 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.exerciseActivity.Exercise;
+import com.example.workoutplanner.exerciseActivity.ExerciseAdapter;
+import com.example.workoutplanner.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RoutineFragmentPost extends Fragment {
+public class RoutineFragment extends Fragment {
 
     private Long routineId;
     private RecyclerView recyclerView;
@@ -38,7 +42,7 @@ public class RoutineFragmentPost extends Fragment {
     private SharedPreferences sharedPreferences;
     private List<Exercise> exerciseList;
 
-    public RoutineFragmentPost(Long routineId) {
+    public RoutineFragment(Long routineId) {
         this.routineId = routineId;
     }
 
@@ -85,7 +89,7 @@ public class RoutineFragmentPost extends Fragment {
 
                                 exerciseList.add(new Exercise(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
-                            adapter = new ExerciseAdapter(exerciseList, routineId, false, false);
+                            adapter = new ExerciseAdapter(exerciseList, routineId, false, true);
                             recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();

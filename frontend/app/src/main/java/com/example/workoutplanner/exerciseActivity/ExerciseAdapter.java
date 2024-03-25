@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.exerciseActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.workoutplanner.exerciseDetailActivity.ExerciseDetailActivity;
+import com.example.workoutplanner.R;
 
 import java.util.List;
 

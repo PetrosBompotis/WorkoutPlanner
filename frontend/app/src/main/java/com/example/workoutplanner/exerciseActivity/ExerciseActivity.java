@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.exerciseActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,7 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
+import com.example.workoutplanner.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.exerciseDetailActivity;
 
 public class Set {
     private Long id;

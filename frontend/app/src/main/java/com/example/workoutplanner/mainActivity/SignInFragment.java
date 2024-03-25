@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.mainActivity;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -19,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.R;
+import com.example.workoutplanner.mainActivity.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,7 +94,8 @@ public class SignInFragment extends Fragment {
             requestBody.put("username", username);
             requestBody.put("password", password);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("SignIn", "Error creating JSON request body: " + e.getMessage());
+            return;
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 requestBody, new Response.Listener<JSONObject>() {
@@ -118,13 +121,13 @@ public class SignInFragment extends Fragment {
                         mainActivity.redirectToUserActivity();
                     }
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    Log.e("SignIn", "Error parsing JSON response: " + e.getMessage());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("SignIn", "failure block");
+                Log.e("SignIn", "Error signing in: " + error.getMessage());
                 showMessage("Error", "Email or Password is invalid");
             }
         });

@@ -1,10 +1,12 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity.workoutFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.example.workoutplanner.userActivity.workoutFragment.RoutineFragment;
 
 import java.util.ArrayList;
 
@@ -14,12 +16,6 @@ public class RoutinePagerAdapter extends FragmentStatePagerAdapter {
 
     public RoutinePagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
-        routineIdsList = new ArrayList<>();
-        routineNamesList = new ArrayList<>();
-    }
-
-    public RoutinePagerAdapter(@NonNull FragmentManager fm) {
-        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         routineIdsList = new ArrayList<>();
         routineNamesList = new ArrayList<>();
     }

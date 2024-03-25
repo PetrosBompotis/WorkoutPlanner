@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.exerciseActivity;
 
 public class Exercise {
     private String exerciseName;

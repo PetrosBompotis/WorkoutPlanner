@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +9,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.workoutplanner.userActivity.communityFragment.CommunityFragment;
+import com.example.workoutplanner.userActivity.measurementsFragment.MeasurementsFragment;
+import com.example.workoutplanner.R;
+import com.example.workoutplanner.userActivity.workoutFragment.WorkoutFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class UserActivity extends AppCompatActivity {

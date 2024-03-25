@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.mainActivity;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -23,6 +23,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.R;
+import com.example.workoutplanner.mainActivity.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -123,7 +125,8 @@ public class SignUpFragment extends Fragment {
             requestBody.put("age", Integer.parseInt(age));
             requestBody.put("password", password);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("SignUp", "Error creating JSON request body: " + e.getMessage());
+            return;
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
@@ -136,7 +139,7 @@ public class SignUpFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Signup", "failure block");
+                Log.e("SignUp", "Error signing up: " + error.getMessage());
             }
         }){
             @Override

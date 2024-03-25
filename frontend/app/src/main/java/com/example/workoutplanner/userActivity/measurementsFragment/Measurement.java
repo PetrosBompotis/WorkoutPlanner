@@ -1,4 +1,4 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.userActivity.measurementsFragment;
 
 import java.util.Date;
 

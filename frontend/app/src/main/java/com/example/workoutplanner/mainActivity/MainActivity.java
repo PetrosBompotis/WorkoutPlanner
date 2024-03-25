@@ -1,11 +1,10 @@
-package com.example.workoutplanner;
+package com.example.workoutplanner.mainActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,6 +17,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.adminActivity.AdminActivity;
+import com.example.workoutplanner.R;
+import com.example.workoutplanner.userActivity.UserActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             requestBody.put("refreshToken", savedRefreshToken);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("RefreshToken", "Error creating JSON request body: " + e.getMessage());
+            return;
         }
 
         JsonObjectRequest jsonObjectRequest =
@@ -60,10 +63,11 @@ public class MainActivity extends AppCompatActivity {
                             accessToken = response.getString("accessToken");
                             refreshToken = response.getString("refreshToken");
                         } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                            Log.e("MainActivity", "Error parsing JSON response: " + e.getMessage());
+                            return;
                         }
                         saveTokensToSharedPreferences(accessToken, refreshToken);
-                        Log.d("RefreshToken",  "Success block");
+                        Log.d("MainActivity", "Token refresh successful");
                         Intent intent = new Intent(
                                 MainActivity.this,
                                 Objects.equals(sharedPreferences.getString("role", null), "ROLE_ADMIN")
@@ -74,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("RefreshToken", "failure block");
+                        Log.e("MainActivity", "Error refreshing token: " + error.getMessage());
                         redirectToSignUp();
                     }
                 });

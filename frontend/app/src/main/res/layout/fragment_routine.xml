@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".RoutineFragment">
+    tools:context=".userActivity.workoutFragment.RoutineFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

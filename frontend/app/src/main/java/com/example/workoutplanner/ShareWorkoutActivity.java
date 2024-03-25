@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.userActivity.UserActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,7 +72,6 @@ public class ShareWorkoutActivity extends AppCompatActivity {
 
     public void shareWorkout(View view){
         updateSelectedWorkoutPlan();
-        duplicatePost();
     }
 
     private void updateSelectedWorkoutPlan() {
@@ -94,6 +94,7 @@ public class ShareWorkoutActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         showToastLong(ShareWorkoutActivity.this, "Workout plan updated successfully");
+                        duplicatePost();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -104,6 +105,7 @@ public class ShareWorkoutActivity extends AppCompatActivity {
                         JSONObject errorObject = new JSONObject(errorResponse);
                         if (errorObject.has("message") && errorObject.getString("message").equals("no data changes found")) {
                             showToastLong(ShareWorkoutActivity.this, "Workout plan updated successfully");
+                            duplicatePost();
                         }
                     } catch (UnsupportedEncodingException | JSONException e) {
                         e.printStackTrace();
