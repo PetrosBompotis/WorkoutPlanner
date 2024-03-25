@@ -19,7 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.workoutplanner.exerciseActivity.Exercise;
+import com.example.workoutplanner.exerciseActivity.ExerciseResponse;
 import com.example.workoutplanner.exerciseActivity.ExerciseAdapter;
 import com.example.workoutplanner.R;
 
@@ -40,7 +40,7 @@ public class RoutineFragment extends Fragment {
     private static final String SHARED_PREFS_NAME = "MyPreferences";
     private RequestQueue requestQueue;
     private SharedPreferences sharedPreferences;
-    private List<Exercise> exerciseList;
+    private List<ExerciseResponse> exerciseList;
 
     public RoutineFragment(Long routineId) {
         this.routineId = routineId;
@@ -87,7 +87,7 @@ public class RoutineFragment extends Fragment {
                                 String gifUrl = exerciseJson.getString("gifUrl");
                                 String instructions = exerciseJson.getString("instructions");
 
-                                exerciseList.add(new Exercise(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
+                                exerciseList.add(new ExerciseResponse(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
                             adapter = new ExerciseAdapter(exerciseList, routineId, false, true);
                             recyclerView.setAdapter(adapter);

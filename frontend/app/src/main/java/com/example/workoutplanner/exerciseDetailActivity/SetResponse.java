@@ -1,12 +1,12 @@
 package com.example.workoutplanner.exerciseDetailActivity;
 
-public class Set {
+public class SetResponse {
     private Long id;
     private Integer reps;
     private Integer numberOfSets;
     private Double weight;
 
-    public Set(Long id, Integer reps, Integer numberOfSets, Double weight) {
+    public SetResponse(Long id, Integer reps, Integer numberOfSets, Double weight) {
         this.id = id;
         this.reps = reps;
         this.numberOfSets = numberOfSets;

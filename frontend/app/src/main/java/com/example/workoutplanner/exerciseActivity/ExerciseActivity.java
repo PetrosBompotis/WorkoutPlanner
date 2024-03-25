@@ -37,7 +37,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private SharedPreferences sharedPreferences;
     private RecyclerView recyclerView;
-    private List<Exercise> exerciseList;
+    private List<ExerciseResponse> exerciseList;
     private ExerciseAdapter adapter;
     private SearchView searchView;
     private Spinner equipmentSpinner;
@@ -143,7 +143,7 @@ public class ExerciseActivity extends AppCompatActivity {
                                 String gifUrl = exerciseJson.getString("gifUrl");
                                 String instructions = exerciseJson.getString("instructions");
 
-                                exerciseList.add(new Exercise(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
+                                exerciseList.add(new ExerciseResponse(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
                             adapter = new ExerciseAdapter(exerciseList, routineId, true, true);
                             recyclerView.setAdapter(adapter);
@@ -167,8 +167,8 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     private void handleFiltering(String query) {
-        List<Exercise> filteredExercises = new ArrayList<>();
-        for (Exercise exercise : exerciseList) {
+        List<ExerciseResponse> filteredExercises = new ArrayList<>();
+        for (ExerciseResponse exercise : exerciseList) {
             if ((exercise.getExerciseName().toLowerCase().contains(query.toLowerCase()) || query.isEmpty()) &&
                     (equipmentSpinner.getSelectedItem().toString().equalsIgnoreCase("any") || exercise.getEquipment().equalsIgnoreCase(equipmentSpinner.getSelectedItem().toString())) &&
                     (muscleSpinner.getSelectedItem().toString().equalsIgnoreCase("any") || exercise.getMuscle().equalsIgnoreCase(muscleSpinner.getSelectedItem().toString()))) {

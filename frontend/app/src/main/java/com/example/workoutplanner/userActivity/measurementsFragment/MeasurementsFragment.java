@@ -41,7 +41,7 @@ import java.util.Map;
 public class MeasurementsFragment extends Fragment {
     private RequestQueue requestQueue;
     private UserActivity userActivity;
-    private List<Measurement> measurementList;
+    private List<MeasurementResponse> measurementList;
     private MeasurementAdapter measurementAdapter;
     private RecyclerView measurementRecyclerView;
     private EditText bodyFatEditText, bodyWeightEditText;
@@ -105,7 +105,7 @@ public class MeasurementsFragment extends Fragment {
                                 }
 
 
-                                measurementList.add(new Measurement(measurementId,bodyFatPercentage,bodyWeight,createdAt));
+                                measurementList.add(new MeasurementResponse(measurementId,bodyFatPercentage,bodyWeight,createdAt));
                             }
                             measurementAdapter = new MeasurementAdapter(measurementList);
                             measurementRecyclerView.setAdapter(measurementAdapter);

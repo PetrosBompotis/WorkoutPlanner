@@ -2,13 +2,13 @@ package com.example.workoutplanner.userActivity.measurementsFragment;
 
 import java.util.Date;
 
-public class Measurement {
+public class MeasurementResponse {
     private Long id;
     private Double bodyFatPercentage;
     private Double bodyWeight;
     private Date createdAt;
 
-    public Measurement(Long id, Double bodyFatPercentage, Double bodyWeight, Date createdAt) {
+    public MeasurementResponse(Long id, Double bodyFatPercentage, Double bodyWeight, Date createdAt) {
         this.id = id;
         this.bodyFatPercentage = bodyFatPercentage;
         this.bodyWeight = bodyWeight;

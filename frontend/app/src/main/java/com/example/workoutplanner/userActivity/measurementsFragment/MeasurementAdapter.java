@@ -13,9 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementViewHolder>{
-    private List<Measurement> measurements;
+    private List<MeasurementResponse> measurements;
 
-    public MeasurementAdapter(List<Measurement> measurements) {
+    public MeasurementAdapter(List<MeasurementResponse> measurements) {
         this.measurements = measurements;
     }
 
@@ -28,7 +28,7 @@ public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MeasurementViewHolder holder, int position) {
-        Measurement measurement = measurements.get(position);
+        MeasurementResponse measurement = measurements.get(position);
         String formattedDate;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
