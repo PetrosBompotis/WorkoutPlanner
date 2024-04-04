@@ -45,7 +45,8 @@ public class Exercise {
     )
     private String gifUrl;
     @Column(
-            nullable = false
+            nullable = false,
+            length = 5000
     )
     private String instructions;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

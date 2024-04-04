@@ -32,7 +32,7 @@ public class SetViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 // Retrieve the Set object associated with this view holder
-                Set set = (Set) v.getTag();
+                SetResponse set = (SetResponse) v.getTag();
 
                 // Retrieve values from EditText fields
                 String repsValue = "";

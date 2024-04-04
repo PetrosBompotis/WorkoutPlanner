@@ -36,4 +36,7 @@ public class ExerciseDataAccessService {
     public void updateExerciseById(Exercise exercise) {
         exerciseRepository.save(exercise);
     }
+    public void insertExercises(List<Exercise> exercises) {
+        exerciseRepository.saveAll(exercises);
+    }
 }

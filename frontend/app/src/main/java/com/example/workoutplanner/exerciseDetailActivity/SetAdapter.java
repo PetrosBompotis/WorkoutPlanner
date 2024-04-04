@@ -13,9 +13,9 @@ import java.util.List;
 
 public class SetAdapter extends RecyclerView.Adapter<SetViewHolder> {
 
-    private List<Set> sets;
+    private List<SetResponse> sets;
 
-    public SetAdapter(List<Set> sets) {
+    public SetAdapter(List<SetResponse> sets) {
         this.sets = sets;
     }
 
@@ -28,7 +28,7 @@ public class SetAdapter extends RecyclerView.Adapter<SetViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SetViewHolder holder, int position) {
-        Set set = sets.get(position);
+        SetResponse set = sets.get(position);
         holder.repsEditText.setText(set.getReps().toString());
         holder.setsEditText.setText(set.getNumberOfSets().toString());
         holder.weightEditText.setText(set.getWeight().toString());

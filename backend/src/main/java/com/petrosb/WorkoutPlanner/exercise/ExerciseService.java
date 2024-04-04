@@ -7,6 +7,7 @@ import com.petrosb.WorkoutPlanner.routine.RoutineDataAccessService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExerciseService {
@@ -77,5 +78,25 @@ public class ExerciseService {
         }
 
         exerciseDataAccessService.updateExerciseById(exercise);
+    }
+
+    public void addExercises(List<ExerciseCreationRequest> exerciseCreationRequests, Long routineId) {
+        Routine routine = routineDataAccessService.selectRoutineByID(routineId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Routine with id [%s] not found".formatted(routineId)
+                ));
+
+        List<Exercise> exercises = exerciseCreationRequests.stream()
+                .map(request -> new Exercise(
+                        request.exerciseName(),
+                        request.muscle(),
+                        request.equipment(),
+                        request.gifUrl(),
+                        request.instructions(),
+                        routine
+                ))
+                .collect(Collectors.toList());
+
+        exerciseDataAccessService.insertExercises(exercises);
     }
 }

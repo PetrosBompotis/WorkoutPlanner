@@ -1,6 +1,6 @@
 package com.example.workoutplanner.exerciseActivity;
 
-public class Exercise {
+public class ExerciseResponse {
     private String exerciseName;
     private String muscle;
     private String equipment;
@@ -8,7 +8,7 @@ public class Exercise {
     private String instructions;
     private Long exerciseId;
 
-    public Exercise(String exerciseName, String muscle, String equipment, String gifUrl, String instructions, Long exerciseId) {
+    public ExerciseResponse(String exerciseName, String muscle, String equipment, String gifUrl, String instructions, Long exerciseId) {
         this.exerciseName = exerciseName;
         this.muscle = muscle;
         this.equipment = equipment;

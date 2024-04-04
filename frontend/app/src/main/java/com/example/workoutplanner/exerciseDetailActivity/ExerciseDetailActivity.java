@@ -51,7 +51,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
     Long routineId, exerciseId;
     String exerciseName, muscle, equipment, gifUrl, instructions;
     Boolean isNew;
-    private List<Set> setList;
+    private List<SetResponse> setList;
     private SetAdapter setAdapter;
 
     @Override
@@ -272,7 +272,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                                 Integer numberOfSets = exerciseJson.getInt("numberOfSets");
                                 Double weight = exerciseJson.getDouble("weight");
 
-                                setList.add(new Set(setId,reps,numberOfSets,weight));
+                                setList.add(new SetResponse(setId,reps,numberOfSets,weight));
                             }
                             setAdapter = new SetAdapter(setList);
                             setRecyclerView.setAdapter(setAdapter);
@@ -364,7 +364,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         requestQueue.add(deleteRequest);
     }
 
-    public void updateSet(Set set){
+    public void updateSet(SetResponse set){
         String url = "http://10.0.2.2:8080/api/v1/sets/"+set.getId();
         String accessToken = sharedPreferences.getString("accessToken", "");
 
