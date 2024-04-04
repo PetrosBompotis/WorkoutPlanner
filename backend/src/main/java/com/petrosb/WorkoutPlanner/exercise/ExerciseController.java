@@ -34,4 +34,10 @@ public class ExerciseController {
                               @PathVariable("exerciseId") Long exerciseId) {
         exerciseService.updateExercise(updateRequest, exerciseId);
     }
+
+    @PostMapping("/routines/{routineId}/exercisess")
+    public void createExercises(@PathVariable(value = "routineId") Long routineId,
+                                @RequestBody List<ExerciseCreationRequest> exerciseCreationRequests) {
+        exerciseService.addExercises(exerciseCreationRequests, routineId);
+    }
 }
