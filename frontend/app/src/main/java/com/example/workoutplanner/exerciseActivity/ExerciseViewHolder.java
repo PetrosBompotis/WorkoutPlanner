@@ -20,14 +20,15 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.
     List<ExerciseResponse> exercises;
     Long routineId;
     Boolean isClickable;
-    Boolean isNew;
+    Boolean isNew, isAdmin;
 
-    public ExerciseViewHolder(@NonNull View itemView, List<ExerciseResponse> exercises, Long routineId, Boolean isNew, Boolean isClickable) {
+    public ExerciseViewHolder(@NonNull View itemView, List<ExerciseResponse> exercises, Long routineId, Boolean isNew, Boolean isClickable, Boolean isAdmin) {
         super(itemView);
         this.exercises = exercises;
         this.routineId = routineId;
         this.isNew = isNew;
         this.isClickable = isClickable;
+        this.isAdmin = isAdmin;
         gifImageView = itemView.findViewById(R.id.gifImageView);
         exerciseNameTextView = itemView.findViewById(R.id.exerciseNameTextView);
         muscleTextView = itemView.findViewById(R.id.muscleTextView);
@@ -53,6 +54,7 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.
             intent.putExtra("instructions", exercise.getInstructions());
             intent.putExtra("routineId", routineId);
             intent.putExtra("isNew", isNew);
+            intent.putExtra("isAdmin", isAdmin);
             context.startActivity(intent);
         }
     }

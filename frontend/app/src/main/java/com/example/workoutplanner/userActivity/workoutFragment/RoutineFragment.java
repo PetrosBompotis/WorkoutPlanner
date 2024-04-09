@@ -89,7 +89,7 @@ public class RoutineFragment extends Fragment {
 
                                 exerciseList.add(new ExerciseResponse(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
-                            adapter = new ExerciseAdapter(exerciseList, routineId, false, true);
+                            adapter = new ExerciseAdapter(exerciseList, routineId, false, true, false);
                             recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();

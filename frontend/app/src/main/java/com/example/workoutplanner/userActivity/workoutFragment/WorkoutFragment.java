@@ -108,6 +108,7 @@ public class WorkoutFragment extends Fragment {
                 Long routineId = getSelectedRoutineId();
                 Intent intent = new Intent(requireContext(), ExerciseActivity.class);
                 intent.putExtra("routineId", routineId);
+                intent.putExtra("isAdmin", false);
                 startActivity(intent);
             }
         });

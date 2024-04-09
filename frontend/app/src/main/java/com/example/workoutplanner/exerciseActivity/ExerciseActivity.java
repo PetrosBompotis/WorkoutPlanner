@@ -43,6 +43,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private Spinner equipmentSpinner;
     private Spinner muscleSpinner;
     private Long routineId;
+    private Boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +59,9 @@ public class ExerciseActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        setupListeners();
+        loadExercises();
         instantiateSpinners();
         initializeExtras();
-        loadExercises();
     }
 
     private void instantiateSpinners() {
@@ -78,6 +78,7 @@ public class ExerciseActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             routineId = extras.getLong("routineId");
+            isAdmin = extras.getBoolean("isAdmin");
         }
     }
 
@@ -145,8 +146,9 @@ public class ExerciseActivity extends AppCompatActivity {
 
                                 exerciseList.add(new ExerciseResponse(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
-                            adapter = new ExerciseAdapter(exerciseList, routineId, true, true);
+                            adapter = new ExerciseAdapter(exerciseList, routineId, true, true, isAdmin);
                             recyclerView.setAdapter(adapter);
+                            setupListeners();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
