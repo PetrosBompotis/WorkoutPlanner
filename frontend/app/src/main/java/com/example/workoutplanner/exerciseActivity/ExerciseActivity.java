@@ -52,7 +52,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
         sharedPreferences = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
-        searchView = findViewById(R.id.search);
+        searchView = findViewById(R.id.searchExercise);
         searchView.clearFocus();
         equipmentSpinner = findViewById(R.id.equipmentSpinner);
         muscleSpinner = findViewById(R.id.muscleSpinner);
