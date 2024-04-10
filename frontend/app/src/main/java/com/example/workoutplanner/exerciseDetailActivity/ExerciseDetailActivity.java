@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.workoutplanner.R;
+import com.example.workoutplanner.adminActivity.AdminActivity;
 import com.example.workoutplanner.userActivity.UserActivity;
 
 import org.json.JSONArray;
@@ -50,7 +51,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
     EditText instructionsEditText, exerciseNameEditText;
     Long routineId, exerciseId;
     String exerciseName, muscle, equipment, gifUrl, instructions;
-    Boolean isNew;
+    Boolean isNew, isAdmin;
     private List<SetResponse> setList;
     private SetAdapter setAdapter;
 
@@ -71,7 +72,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         setRecyclerView = findViewById(R.id.setRecyclerView);
         setRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         addSetButton = findViewById(R.id.addSetButton);
-        instructionsEditText = findViewById(R.id.instructionsEditText);
+        instructionsEditText = findViewById(R.id.adminInstructionsEditText);
 
         setUpListeners();
         initializeExtras();
@@ -89,10 +90,14 @@ public class ExerciseDetailActivity extends AppCompatActivity {
             exerciseId = extras.getLong("exerciseId");
             instructions = extras.getString("instructions");
             isNew = extras.getBoolean("isNew");
+            isAdmin = extras.getBoolean("isAdmin");
 
             if (isNew){
                 exerciseDeleteButton.setVisibility(View.GONE);
                 addSetButton.setVisibility(View.GONE);
+                if (isAdmin){
+                    exerciseDeleteButton.setVisibility(View.VISIBLE);
+                }
             }
 
             exerciseNameEditText.setText(exerciseName);
@@ -106,7 +111,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
         exerciseDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNew){
+                if (isNew && !isAdmin){
                     createNewExercise();
                 }else {
                     updateSelectedExercise();
@@ -190,8 +195,13 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
-                        startActivity(intent);
+                        if (!isAdmin){
+                            Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
+                            startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(ExerciseDetailActivity.this, AdminActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override

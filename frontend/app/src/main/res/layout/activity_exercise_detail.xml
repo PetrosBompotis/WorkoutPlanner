@@ -104,7 +104,7 @@
                 android:textSize="17sp"/>
 
             <EditText
-                android:id="@+id/instructionsEditText"
+                android:id="@+id/adminInstructionsEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"

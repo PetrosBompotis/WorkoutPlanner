@@ -88,7 +88,7 @@ public class RoutineFragmentPost extends Fragment {
 
                                 exerciseList.add(new ExerciseResponse(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
-                            adapter = new ExerciseAdapter(exerciseList, routineId, false, false);
+                            adapter = new ExerciseAdapter(exerciseList, routineId, false, false, false);
                             recyclerView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
