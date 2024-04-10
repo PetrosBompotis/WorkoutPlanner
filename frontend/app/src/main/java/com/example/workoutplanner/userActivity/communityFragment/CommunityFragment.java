@@ -40,7 +40,7 @@ public class CommunityFragment extends Fragment {
     private UserActivity userActivity;
     private RequestQueue requestQueue;
     private RecyclerView recyclerViewPosts;
-    private List<PostResponse> postList;
+    private List<PostResponse> postList, filteredPosts;
     private PostAdapter adapter;
     private SearchView searchViewPost;
     private Spinner difficultySpinner;
@@ -52,6 +52,8 @@ public class CommunityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         userActivity = (UserActivity) getActivity();
         requestQueue = Volley.newRequestQueue(requireContext());
+        postList = new ArrayList<>();
+        filteredPosts = new ArrayList<>();
     }
 
     @Override
@@ -159,7 +161,9 @@ public class CommunityFragment extends Fragment {
 
                                 postList.add(new PostResponse(postId, postName, createdBy, difficulty, gender, workoutPlanId, downloadCounter));
                             }
-                            adapter = new PostAdapter(postList, false);
+                            filteredPosts.addAll(postList);
+
+                            adapter = new PostAdapter(filteredPosts, false);
                             recyclerViewPosts.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -181,7 +185,7 @@ public class CommunityFragment extends Fragment {
     }
 
     private void handleFiltering(String query) {
-        List<PostResponse> filteredPosts = new ArrayList<>();
+        filteredPosts.clear();
         for (PostResponse post : postList) {
             if ((post.getPostName().toLowerCase().contains(query.toLowerCase()) || query.isEmpty()) &&
                     (difficultySpinner.getSelectedItem().toString().equalsIgnoreCase("any") || post.getDifficulty().equalsIgnoreCase(difficultySpinner.getSelectedItem().toString())) &&
