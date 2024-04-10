@@ -52,8 +52,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
     }
 
     public void filterList(List<ExerciseResponse> filteredExercises) {
-        exercises.clear(); // Clear the current list
-        exercises.addAll(filteredExercises); // Add filtered items
+        exercises = filteredExercises;
         notifyDataSetChanged();
     }
 }

@@ -38,6 +38,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private RecyclerView recyclerView;
     private List<ExerciseResponse> exerciseList;
+    private List<ExerciseResponse> filteredExerciseList;
     private ExerciseAdapter adapter;
     private SearchView searchView;
     private Spinner equipmentSpinner;
@@ -58,6 +59,7 @@ public class ExerciseActivity extends AppCompatActivity {
         muscleSpinner = findViewById(R.id.muscleSpinner);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        filteredExerciseList = new ArrayList<>();
 
         loadExercises();
         instantiateSpinners();
@@ -146,7 +148,9 @@ public class ExerciseActivity extends AppCompatActivity {
 
                                 exerciseList.add(new ExerciseResponse(exerciseName, muscle, equipment, gifUrl, instructions, exerciseId));
                             }
-                            adapter = new ExerciseAdapter(exerciseList, routineId, true, true, isAdmin);
+                            filteredExerciseList.addAll(exerciseList);
+
+                            adapter = new ExerciseAdapter(filteredExerciseList, routineId, true, true, isAdmin);
                             recyclerView.setAdapter(adapter);
                             setupListeners();
                         } catch (JSONException e) {
@@ -169,15 +173,15 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     private void handleFiltering(String query) {
-        List<ExerciseResponse> filteredExercises = new ArrayList<>();
+        filteredExerciseList.clear();
         for (ExerciseResponse exercise : exerciseList) {
             if ((exercise.getExerciseName().toLowerCase().contains(query.toLowerCase()) || query.isEmpty()) &&
                     (equipmentSpinner.getSelectedItem().toString().equalsIgnoreCase("any") || exercise.getEquipment().equalsIgnoreCase(equipmentSpinner.getSelectedItem().toString())) &&
                     (muscleSpinner.getSelectedItem().toString().equalsIgnoreCase("any") || exercise.getMuscle().equalsIgnoreCase(muscleSpinner.getSelectedItem().toString()))) {
-                filteredExercises.add(exercise);
+                filteredExerciseList.add(exercise);
             }
         }
-        adapter.filterList(filteredExercises);
+        adapter.filterList(filteredExerciseList);
     }
 
     public void showToastLong(Context context, String message) {
