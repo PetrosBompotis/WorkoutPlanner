@@ -1,1 +1,1 @@
-web: java -jar WorkoutPlannerApplication.class
+web: java -jar target/classes/:target/dependency/* com.petrosb.WorkoutPlanner.WorkoutPlannerApplication
