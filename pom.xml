@@ -86,7 +86,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>backend/src/main/java/com/petrosb/WorkoutPlanner/WorkoutPlannerApplication.java</mainClass>
+					<mainClass>backend/target/classes/com/petrosb/WorkoutPlanner/WorkoutPlannerApplication.class</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
