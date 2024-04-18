@@ -107,7 +107,7 @@ public class MeasurementsFragment extends Fragment {
 
                                 measurementList.add(new MeasurementResponse(measurementId,bodyFatPercentage,bodyWeight,createdAt));
                             }
-                            measurementAdapter = new MeasurementAdapter(measurementList);
+                                measurementAdapter = new MeasurementAdapter(measurementList, MeasurementsFragment.this);
                             measurementRecyclerView.setAdapter(measurementAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();

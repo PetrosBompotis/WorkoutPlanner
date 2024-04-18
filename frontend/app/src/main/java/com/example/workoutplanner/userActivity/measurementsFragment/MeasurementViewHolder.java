@@ -18,7 +18,8 @@ public class MeasurementViewHolder extends RecyclerView.ViewHolder{
     TextView weightTextView;
     ImageButton deleteMeasurementButton;
 
-    public MeasurementViewHolder(@NonNull View itemView) {
+
+    public MeasurementViewHolder(@NonNull View itemView, MeasurementsFragment fragment) {
         super(itemView);
 
         dateTextView = itemView.findViewById(R.id.dateTextView);
@@ -31,6 +32,7 @@ public class MeasurementViewHolder extends RecyclerView.ViewHolder{
             public void onClick(View v) {
                 Long measurementId = (Long) v.getTag();
                 Log.d("ssss",measurementId.toString());
+                fragment.deleteMeasurement(measurementId);
             }
         });
     }

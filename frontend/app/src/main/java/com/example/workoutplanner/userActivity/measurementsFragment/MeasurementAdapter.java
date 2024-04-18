@@ -14,16 +14,18 @@ import java.util.List;
 
 public class MeasurementAdapter extends RecyclerView.Adapter<MeasurementViewHolder>{
     private List<MeasurementResponse> measurements;
+    private MeasurementsFragment fragment;
 
-    public MeasurementAdapter(List<MeasurementResponse> measurements) {
+    public MeasurementAdapter(List<MeasurementResponse> measurements, MeasurementsFragment fragment) {
         this.measurements = measurements;
+        this.fragment = fragment;
     }
 
     @NonNull
     @Override
     public MeasurementViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.measurement_item, parent, false);
-        return new MeasurementViewHolder(view);
+        return new MeasurementViewHolder(view, fragment);
     }
 
     @Override
