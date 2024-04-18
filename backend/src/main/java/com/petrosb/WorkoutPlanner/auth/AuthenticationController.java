@@ -41,7 +41,6 @@ public class AuthenticationController {
     @PostMapping("/refreshtoken")
     public ResponseEntity<?> refreshtoken(@RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.refreshToken();
-//TODO:call createRefreshToken to extend lifespand of refresh token without login
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getCustomer)

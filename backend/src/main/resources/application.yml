@@ -5,12 +5,12 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://cdgn4ufq38ipd0.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/dapmicsqc9t6od
-    username: u27p9r4j6c5fv9
-    password: p6ce35439db6360488681db813f1d754ab6193162e8423c28dd7828a44dca1532
+    url: jdbc:postgresql://localhost:5332/workout_planner_db
+    username: petros
+    password: password
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
