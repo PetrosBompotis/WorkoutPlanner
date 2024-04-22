@@ -592,7 +592,7 @@ public class WorkoutFragment extends Fragment {
         TextView customDialogTextView = dialog.findViewById(R.id.customDialogTextView);
         EditText customDialogEditText = dialog.findViewById(R.id.customDialogEditText);
 
-        customDialogTextView.setText(action + item);
+        customDialogTextView.setText(action + " " + item);
 
         cancelDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override

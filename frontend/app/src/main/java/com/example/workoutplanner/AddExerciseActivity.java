@@ -1,12 +1,10 @@
 package com.example.workoutplanner;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,8 +19,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.workoutplanner.exerciseDetailActivity.ExerciseDetailActivity;
-import com.example.workoutplanner.userActivity.UserActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

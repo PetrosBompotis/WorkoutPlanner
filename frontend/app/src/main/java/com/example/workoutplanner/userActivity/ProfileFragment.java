@@ -3,14 +3,13 @@ package com.example.workoutplanner.userActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,7 +19,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.workoutplanner.R;
 import com.example.workoutplanner.mainActivity.MainActivity;
-import com.example.workoutplanner.userActivity.UserActivity;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.HashMap;

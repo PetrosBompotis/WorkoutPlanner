@@ -6,14 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.ViewTreeViewModelKt;
 
-import com.android.volley.RequestQueue;
 import com.example.workoutplanner.AddExerciseActivity;
 import com.example.workoutplanner.R;
 import com.example.workoutplanner.exerciseActivity.ExerciseActivity;

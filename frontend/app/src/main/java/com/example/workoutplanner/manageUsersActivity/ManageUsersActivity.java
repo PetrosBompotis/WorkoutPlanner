@@ -6,12 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,9 +19,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.workoutplanner.R;
-import com.example.workoutplanner.exerciseActivity.ExerciseActivity;
-import com.example.workoutplanner.exerciseActivity.ExerciseAdapter;
-import com.example.workoutplanner.exerciseActivity.ExerciseResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workoutplanner.R;
-import com.example.workoutplanner.exerciseDetailActivity.ExerciseDetailActivity;
 
 public class UserViewHolder extends RecyclerView.ViewHolder{
     TextView userEmailTextView, userNameTextView, userAgeTextView, userGenderTextView;
