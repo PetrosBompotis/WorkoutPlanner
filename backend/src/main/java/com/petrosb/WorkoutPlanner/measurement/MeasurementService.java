@@ -44,7 +44,7 @@ public class MeasurementService {
     public void deleteMeasurementById(Long measurementId){
         //check if id exists
         if(!measurementDataAccessService.existsMeasurementWithId(measurementId)){
-            throw new ResourceNotFoundException("Workout plan with id [%s] not found".formatted(measurementId));
+            throw new ResourceNotFoundException("Measurement with id [%s] not found".formatted(measurementId));
         }
 
         //otherwise remove
@@ -56,7 +56,7 @@ public class MeasurementService {
 
         Measurement measurement = measurementDataAccessService.selectMeasurementByID(measurementId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Workout plan with id [%s] not found".formatted(measurementId)
+                        "Measurement with id [%s] not found".formatted(measurementId)
                 ));
         boolean changes = false;
         //check if attributes need change exists

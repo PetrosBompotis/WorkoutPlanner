@@ -46,7 +46,7 @@ public class SetService {
     public void deleteSetById(Long setId){
         //check if id exists
         if(!setDataAccessService.existsSetWithId(setId)){
-            throw new ResourceNotFoundException("Exercise with id [%s] not found".formatted(setId));
+            throw new ResourceNotFoundException("Set with id [%s] not found".formatted(setId));
         }
 
         //otherwise remove
@@ -58,7 +58,7 @@ public class SetService {
 
         Set set = setDataAccessService.selectSetByID(setId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Exercise with id [%s] not found".formatted(setId)
+                        "Set with id [%s] not found".formatted(setId)
                 ));
         boolean changes = false;
         //check if attributes need change exists
