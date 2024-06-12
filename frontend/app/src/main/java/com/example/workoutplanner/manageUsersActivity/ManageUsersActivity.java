@@ -19,6 +19,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.workoutplanner.R;
+import com.example.workoutplanner.exerciseDetailActivity.ExerciseDetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,8 +119,9 @@ public class ManageUsersActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        showToastLong(ManageUsersActivity.this, "User deleted successfully");
                         loadUsers();
-                        Log.d("delete set success", "set deleted");
+                        Log.d("delete user success", "user deleted");
                     }
                 },
                 new Response.ErrorListener() {

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.workoutplanner.AddExerciseActivity;
 import com.example.workoutplanner.R;
 import com.example.workoutplanner.adminActivity.AdminActivity;
 import com.example.workoutplanner.userActivity.UserActivity;
@@ -95,6 +97,7 @@ public class ExerciseDetailActivity extends AppCompatActivity {
             if (isNew){
                 exerciseDeleteButton.setVisibility(View.GONE);
                 addSetButton.setVisibility(View.GONE);
+                setTextView.setVisibility(View.GONE);
                 if (isAdmin){
                     exerciseDeleteButton.setVisibility(View.VISIBLE);
                 }
@@ -196,9 +199,11 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (!isAdmin){
+                            showToastLong(ExerciseDetailActivity.this, "Exercise updated successfully");
                             Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
                             startActivity(intent);
                         }else {
+                            showToastLong(ExerciseDetailActivity.this, "Exercise updated successfully");
                             Intent intent = new Intent(ExerciseDetailActivity.this, AdminActivity.class);
                             startActivity(intent);
                         }
@@ -213,8 +218,15 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                         JSONObject errorObject = new JSONObject(errorResponse);
                         if (errorObject.has("message") && errorObject.getString("message").equals("no data changes found")) {
                             // Redirect to UserActivity
-                            Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
-                            startActivity(intent);
+                            if (!isAdmin){
+                                showToastLong(ExerciseDetailActivity.this, "no data changes found");
+                                Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
+                                startActivity(intent);
+                            }else {
+                                showToastLong(ExerciseDetailActivity.this, "no data changes found");
+                                Intent intent = new Intent(ExerciseDetailActivity.this, AdminActivity.class);
+                                startActivity(intent);
+                            }
                         }
                     } catch (UnsupportedEncodingException | JSONException e) {
                         e.printStackTrace();
@@ -241,14 +253,21 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
-                        startActivity(intent);
+                        if (!isAdmin){
+                            showToastLong(ExerciseDetailActivity.this, "Exercise deleted successfully");
+                            Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
+                            startActivity(intent);
+                        }else {
+                            showToastLong(ExerciseDetailActivity.this, "Exercise deleted successfully");
+                            Intent intent = new Intent(ExerciseDetailActivity.this, AdminActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        showToastLong(ExerciseDetailActivity.this, "Error deleting exercise");
                     }
                 }) {
             @Override
@@ -423,5 +442,9 @@ public class ExerciseDetailActivity extends AppCompatActivity {
             }
         };
         requestQueue.add(jsonObjectRequest);
+    }
+
+    public void showToastLong(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

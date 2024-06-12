@@ -229,7 +229,7 @@ public class WorkoutFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showToastLong(requireContext(), "Workout plan created successfully");
+                        //showToastLong(requireContext(), "Workout plan created successfully");
                         loadWorkoutPlans();
                     }
                 }, new Response.ErrorListener() {
@@ -390,7 +390,7 @@ public class WorkoutFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showToastLong(requireContext(), "Routine created successfully");
+                        //showToastLong(requireContext(), "Routine created successfully");
                         loadRoutines();
                     }
                 }, new Response.ErrorListener() {

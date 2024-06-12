@@ -1,6 +1,7 @@
 package com.example.workoutplanner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.workoutplanner.adminActivity.AdminActivity;
+import com.example.workoutplanner.exerciseDetailActivity.ExerciseDetailActivity;
+import com.example.workoutplanner.userActivity.UserActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,11 +68,17 @@ public class AddExerciseActivity extends AppCompatActivity {
     }
 
     private void createNewExercise(){
+
         String exerciseName = exerciseNameEditText.getText().toString();
         String muscle = muscleSpinner.getSelectedItem().toString();
         String equipment = equipmentSpinner.getSelectedItem().toString();
         String gifUrl = gifUrlEditText.getText().toString();
         String instructions = instructionsEditText.getText().toString();
+
+        if (exerciseName.isEmpty() || muscle.equals("any") || equipment.equals("any") || gifUrl.isEmpty()){
+            showToastLong(this, "Please fill all the fields");
+            return;
+        }
 
         String url = "http://10.0.2.2:8080/api/v1/routines/1/exercises";
 
@@ -87,12 +97,14 @@ public class AddExerciseActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showToastLong(AddExerciseActivity.this, "created successfully");
+                        showToastLong(AddExerciseActivity.this, "Exercise created successfully");
+                        Intent intent = new Intent(AddExerciseActivity.this, AdminActivity.class);
+                        startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                showToastLong(AddExerciseActivity.this, "Error creating exercise");
             }
         }) {
             @Override

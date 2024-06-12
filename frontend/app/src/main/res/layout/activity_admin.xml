@@ -32,7 +32,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Admin dashboard"
+                    android:text="Admin Dashboard"
                     android:textSize="36sp"
                     android:textAlignment="center"
                     android:textStyle="bold"
@@ -45,7 +45,7 @@
                     android:layout_marginTop="30dp"
                     android:backgroundTint="@color/lavender"
                     android:onClick="redirectToAddExercise"
-                    android:text="Add exercise"
+                    android:text="Add Exercise"
                     android:textSize="18sp"
                     app:cornerRadius="20dp" />
 
@@ -56,7 +56,7 @@
                     android:layout_marginTop="30dp"
                     android:backgroundTint="@color/lavender"
                     android:onClick="redirectToExerciseActivity"
-                    android:text="Manage exercises"
+                    android:text="Manage Exercises"
                     android:textSize="18sp"
                     app:cornerRadius="20dp" />
 
@@ -67,7 +67,7 @@
                     android:layout_marginTop="30dp"
                     android:backgroundTint="@color/lavender"
                     android:onClick="redirectToManageUsers"
-                    android:text="Manage users"
+                    android:text="Manage Users"
                     android:textSize="18sp"
                     app:cornerRadius="20dp" />
 
@@ -78,7 +78,7 @@
                     android:layout_marginTop="30dp"
                     android:backgroundTint="@color/lavender"
                     android:onClick="signOut"
-                    android:text="Sign out"
+                    android:text="Sign Out"
                     android:textSize="18sp"
                     app:cornerRadius="20dp" />
             </LinearLayout>
