@@ -155,13 +155,14 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        showToastLong(ExerciseDetailActivity.this, "Exercise added to your routine");
                         Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                showToastLong(ExerciseDetailActivity.this, "Error adding exercise to your routine");
             }
         }) {
             @Override
@@ -219,11 +220,11 @@ public class ExerciseDetailActivity extends AppCompatActivity {
                         if (errorObject.has("message") && errorObject.getString("message").equals("no data changes found")) {
                             // Redirect to UserActivity
                             if (!isAdmin){
-                                showToastLong(ExerciseDetailActivity.this, "no data changes found");
+                                //showToastLong(ExerciseDetailActivity.this, "no data changes found");
                                 Intent intent = new Intent(ExerciseDetailActivity.this, UserActivity.class);
                                 startActivity(intent);
                             }else {
-                                showToastLong(ExerciseDetailActivity.this, "no data changes found");
+                                //showToastLong(ExerciseDetailActivity.this, "no data changes found");
                                 Intent intent = new Intent(ExerciseDetailActivity.this, AdminActivity.class);
                                 startActivity(intent);
                             }

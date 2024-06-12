@@ -81,10 +81,24 @@ public class ShareWorkoutActivity extends AppCompatActivity {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + accessToken);
 
+        String gender = genderSpinner.getSelectedItem().toString();
+        String difficulty = difficultySpinner.getSelectedItem().toString();
+
+        if (gender.equals("any") || difficulty.equals("any")){
+            showToastLong(ShareWorkoutActivity.this, "Please select both gender and difficulty");
+            return;
+        }
+
+        String postName = postNameEditText.getText().toString();
+        if (postName.isEmpty()){
+            showToastLong(ShareWorkoutActivity.this, "Please enter a post name");
+            return;
+        }
+
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("gender", genderSpinner.getSelectedItem().toString());
-            requestBody.put("difficulty", difficultySpinner.getSelectedItem().toString());
+            requestBody.put("gender", gender);
+            requestBody.put("difficulty", difficulty);
         } catch (JSONException e) {
             e.printStackTrace();
         }

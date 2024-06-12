@@ -189,9 +189,7 @@ public class WorkoutFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Workout plan deleted successfully
                         showToastLong(requireContext(), "Workout plan deleted successfully");
-                        // Optionally, you can reload the workout plans after deletion
                         loadWorkoutPlans();
                     }
                 },

@@ -223,7 +223,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         showToastLong(PostDetailActivity.this, "Post deleted successfully");
-                        Intent intent = new Intent(PostDetailActivity.this, UserSharedPostsActivity.class);
+                        Intent intent = new Intent(PostDetailActivity.this, UserActivity.class);
                         startActivity(intent);
                     }
                 },
@@ -298,7 +298,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         showToastLong(PostDetailActivity.this, "Post updated successfully");
-                        Intent intent = new Intent(PostDetailActivity.this, UserSharedPostsActivity.class);
+                        Intent intent = new Intent(PostDetailActivity.this, UserActivity.class);
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
@@ -339,7 +339,6 @@ public class PostDetailActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showToastLong(PostDetailActivity.this, "Post updated successfully");
                         Intent intent = new Intent(PostDetailActivity.this, UserSharedPostsActivity.class);
                         startActivity(intent);
                     }
