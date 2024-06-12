@@ -93,7 +93,7 @@ public class ShareWorkoutActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showToastLong(ShareWorkoutActivity.this, "Workout plan updated successfully");
+                        //showToastLong(ShareWorkoutActivity.this, "Workout plan updated successfully");
                         duplicatePost();
                     }
                 }, new Response.ErrorListener() {
@@ -104,7 +104,7 @@ public class ShareWorkoutActivity extends AppCompatActivity {
                         String errorResponse = new String(error.networkResponse.data, HttpHeaderParser.parseCharset(error.networkResponse.headers));
                         JSONObject errorObject = new JSONObject(errorResponse);
                         if (errorObject.has("message") && errorObject.getString("message").equals("no data changes found")) {
-                            showToastLong(ShareWorkoutActivity.this, "Workout plan updated successfully");
+                            //showToastLong(ShareWorkoutActivity.this, "Workout plan updated successfully");
                             duplicatePost();
                         }
                     } catch (UnsupportedEncodingException | JSONException e) {
@@ -138,7 +138,7 @@ public class ShareWorkoutActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             duplicatedWorkoutPlanId = response.getLong("id");
-                            showToastLong(ShareWorkoutActivity.this, "Workout id: " + duplicatedWorkoutPlanId);
+                            //showToastLong(ShareWorkoutActivity.this, "Workout id: " + duplicatedWorkoutPlanId);
                             createPost(duplicatedWorkoutPlanId);
 
                         } catch (JSONException e) {

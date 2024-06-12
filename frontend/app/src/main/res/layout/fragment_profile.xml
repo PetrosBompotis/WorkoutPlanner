@@ -229,17 +229,17 @@
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/backround"/>
+                        android:src="@drawable/facebook_logo_primary"/>
 
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/backround"/>
+                        android:src="@drawable/instagram_glyph_gradient"/>
 
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/backround"/>
+                        android:src="@drawable/gmail_logo"/>
 
                 </GridLayout>
             </LinearLayout>
