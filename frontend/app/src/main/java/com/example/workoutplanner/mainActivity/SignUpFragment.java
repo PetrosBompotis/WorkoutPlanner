@@ -31,7 +31,7 @@ import org.json.JSONObject;
 
 public class SignUpFragment extends Fragment {
     private RequestQueue requestQueue;
-    private EditText usernameEditText, emailEditText, passwordEditText;
+    private EditText usernameEditText, emailEditText, passwordEditText, confirmPasswordEditText;
     private MainActivity mainActivity;
     private Spinner genderSpinner, ageSpinner;
     private Button signUpButton;
@@ -59,6 +59,7 @@ public class SignUpFragment extends Fragment {
         usernameEditText = view.findViewById(R.id.signup_name);
         emailEditText = view.findViewById(R.id.signup_email);
         passwordEditText = view.findViewById(R.id.signup_password);
+        confirmPasswordEditText = view.findViewById(R.id.signup_confirm_password);
         genderSpinner = view.findViewById(R.id.signup_gender_spinner);
         ageSpinner = view.findViewById(R.id.signup_age_spinner);
         signUpButton = view.findViewById(R.id.signup_button);
@@ -97,6 +98,7 @@ public class SignUpFragment extends Fragment {
         String username = usernameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
+        String confirmPassword = confirmPasswordEditText.getText().toString().trim();
         String gender = genderSpinner.getSelectedItem().toString();
         String age = ageSpinner.getSelectedItem().toString();
 
@@ -112,6 +114,11 @@ public class SignUpFragment extends Fragment {
 
         if (password.length() < 6) {
             showMessage("Error", "Password must be at least 6 characters long");
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            showMessage("Error", "Passwords do not match");
             return;
         }
 

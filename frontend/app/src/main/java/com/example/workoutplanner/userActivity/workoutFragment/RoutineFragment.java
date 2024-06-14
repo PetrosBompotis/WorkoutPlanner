@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -41,6 +43,7 @@ public class RoutineFragment extends Fragment {
     private RequestQueue requestQueue;
     private SharedPreferences sharedPreferences;
     private List<ExerciseResponse> exerciseList;
+    private ImageView addExerciseImageView;
 
     public RoutineFragment(Long routineId) {
         this.routineId = routineId;
@@ -59,6 +62,8 @@ public class RoutineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_routine, container, false);
+
+        addExerciseImageView = view.findViewById(R.id.addExerciseImageView);
         recyclerView = view.findViewById(R.id.exerciseRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         loadExercises(routineId);
@@ -91,6 +96,12 @@ public class RoutineFragment extends Fragment {
                             }
                             adapter = new ExerciseAdapter(exerciseList, routineId, false, true, false);
                             recyclerView.setAdapter(adapter);
+
+                            if (exerciseList.isEmpty()) {
+                                addExerciseImageView.setVisibility(View.VISIBLE);
+                            } else {
+                                addExerciseImageView.setVisibility(View.GONE);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

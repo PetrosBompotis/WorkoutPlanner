@@ -127,7 +127,7 @@ public class ManageUsersActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        showToastLong(ManageUsersActivity.this, "Error deleting user");
                     }
                 }) {
             @Override

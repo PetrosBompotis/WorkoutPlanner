@@ -22,6 +22,7 @@
     <string name="illustration_of_exercise">Illustration of exercise</string>
     <string name="done">Done</string>
     <string name="delete">Delete</string>
+    <string name="confirm_password">Confirm password</string>
     <string-array name="equipment_array">
         <item>any</item>
         <item>assisted</item>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +36,7 @@ public class UserSharedPostsActivity extends AppCompatActivity {
     private RecyclerView recyclerViewMyPosts;
     private List<PostResponse> postList;
     private PostAdapter adapter;
+    private TextView mySharedWorkoutsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class UserSharedPostsActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         recyclerViewMyPosts = findViewById(R.id.recyclerViewMyPosts);
         recyclerViewMyPosts.setLayoutManager(new LinearLayoutManager(this));
+        mySharedWorkoutsTextView =findViewById(R.id.mySharedWorkoutsTextView);
 
         loadPosts();
     }
@@ -78,6 +82,12 @@ public class UserSharedPostsActivity extends AppCompatActivity {
                             }
                             adapter = new PostAdapter(postList, true);
                             recyclerViewMyPosts.setAdapter(adapter);
+
+                            if (postList.isEmpty()) {
+                                mySharedWorkoutsTextView.setText("No shared workouts yet!");
+                            } else {
+                                mySharedWorkoutsTextView.setText("My Shared Workouts");
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

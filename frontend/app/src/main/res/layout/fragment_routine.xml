@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:context=".userActivity.workoutFragment.RoutineFragment">
 
+    <ImageView
+        android:id="@+id/addExerciseImageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/add_exercise"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
