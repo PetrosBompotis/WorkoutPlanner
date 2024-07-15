@@ -44,7 +44,7 @@
                     android:layout_marginTop="40dp"
                     android:padding="8dp"
                     android:hint="Post name"
-                    android:drawableStart="@drawable/baseline_account_circle_24"
+                    android:drawableStart="@drawable/baseline_drive_file_rename_outline_24"
                     android:drawablePadding="8dp"
                     android:textColor="@color/black"/>
                 <LinearLayout
